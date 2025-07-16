@@ -25,7 +25,7 @@ A comprehensive AI-powered legal contract analysis system using OpenAI GPT-4o-mi
 
 ```bash
 git clone https://github.com/skkuhg/Legal_Assistant_Contract_Analysis_RAG_KG_CP_LLM_LangChain.git
-cd legal-assistant-contract-analysis
+cd Legal_Assistant_Contract_Analysis_RAG_KG_CP_LLM_LangChain
 ```
 
 ### 2. Install Dependencies
