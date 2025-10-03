@@ -1,0 +1,152 @@
+{
+  "findings": [
+    {
+      "finding_id": "finding_001",
+      "clause_reference": "Section 1",
+      "policy_violated": "d55cd3837dfba1068ca5d77bc90df306",
+      "severity": "critical",
+      "contract_evidence": "Contractor's total liability under this Agreement shall not exceed the amount of fees paid by Client in the twelve (12) months preceding the claim.",
+      "issue_explanation": "Liability cap must be at least 200% of total fees. Current cap is inadequate.",
+      "suggested_edit": {
+        "change_type": "value_update",
+        "current_text": "Contractor's total liability under this Agreement shall not exceed the amount of fees paid by Client in the twelve (12) months preceding the claim.",
+        "proposed_text": "Contractor's total liability under this Agreement shall not exceed 200% of the total fees paid by Client.",
+        "track_changes": {
+          "deletions": [
+            {
+              "start": 0,
+              "end": 108,
+              "text": "Contractor's total liability under this Agreement shall not exceed the amount of fees paid by Client in the twelve (12) months preceding the claim."
+            }
+          ],
+          "insertions": [
+            {
+              "position": 0,
+              "text": "Contractor's total liability under this Agreement shall not exceed 200% of the total fees paid by Client."
+            }
+          ]
+        },
+        "rationale": "Aligns liability cap with policy requirement for minimum 200% of total fees."
+      },
+      "fallback_options": []
+    },
+    {
+      "finding_id": "finding_002",
+      "clause_reference": "Section 2",
+      "policy_violated": "ae53ef34f38f9e523cb9319bbfb4b1f0",
+      "severity": "high",
+      "contract_evidence": "All work product created by Contractor shall remain the property of Contractor.",
+      "issue_explanation": "Company must own all deliverables. Current clause grants ownership to Contractor.",
+      "suggested_edit": {
+        "change_type": "text_replacement",
+        "current_text": "All work product created by Contractor shall remain the property of Contractor.",
+        "proposed_text": "All work product created by Contractor shall be the property of Client.",
+        "track_changes": {
+          "deletions": [
+            {
+              "start": 0,
+              "end": 75,
+              "text": "All work product created by Contractor shall remain the property of Contractor."
+            }
+          ],
+          "insertions": [
+            {
+              "position": 0,
+              "text": "All work product created by Contractor shall be the property of Client."
+            }
+          ]
+        },
+        "rationale": "Ensures Company ownership of deliverables as per policy."
+      },
+      "fallback_options": []
+    },
+    {
+      "finding_id": "finding_003",
+      "clause_reference": "Section 3",
+      "policy_violated": "ceee425e796c8ef6ef06aaaeb1ef1338",
+      "severity": "critical",
+      "contract_evidence": "Client shall pay all outstanding fees within ninety (90) days.",
+      "issue_explanation": "Payment terms exceed 30 days. Must be revised to comply with policy.",
+      "suggested_edit": {
+        "change_type": "value_update",
+        "current_text": "Client shall pay all outstanding fees within ninety (90) days.",
+        "proposed_text": "Client shall pay all outstanding fees within thirty (30) days.",
+        "track_changes": {
+          "deletions": [
+            {
+              "start": 0,
+              "end": 55,
+              "text": "Client shall pay all outstanding fees within ninety (90) days."
+            }
+          ],
+          "insertions": [
+            {
+              "position": 0,
+              "text": "Client shall pay all outstanding fees within thirty (30) days."
+            }
+          ]
+        },
+        "rationale": "Aligns payment terms with policy requirement of 30 days."
+      },
+      "fallback_options": []
+    },
+    {
+      "finding_id": "finding_004",
+      "clause_reference": "Section 4",
+      "policy_violated": "0382571d394d0a385b8f49ea9224fdb4",
+      "severity": "medium",
+      "contract_evidence": "Each party agrees to maintain confidentiality of the other party's information for a period of two (2) years following disclosure.",
+      "issue_explanation": "Confidentiality term must be 5 years post-termination, not 2 years.",
+      "suggested_edit": {
+        "change_type": "value_update",
+        "current_text": "Each party agrees to maintain confidentiality of the other party's information for a period of two (2) years following disclosure.",
+        "proposed_text": "Each party agrees to maintain confidentiality of the other party's information for a period of five (5) years following disclosure.",
+        "track_changes": {
+          "deletions": [
+            {
+              "start": 0,
+              "end": 112,
+              "text": "Each party agrees to maintain confidentiality of the other party's information for a period of two (2) years following disclosure."
+            }
+          ],
+          "insertions": [
+            {
+              "position": 0,
+              "text": "Each party agrees to maintain confidentiality of the other party's information for a period of five (5) years following disclosure."
+            }
+          ]
+        },
+        "rationale": "Extends confidentiality term to meet policy requirement."
+      },
+      "fallback_options": []
+    }
+  ],
+  "summary": {
+    "total_findings": 4,
+    "by_severity": {
+      "critical": 2,
+      "high": 1,
+      "medium": 1,
+      "low": 0
+    },
+    "total_suggested_edits": 4,
+    "key_themes": [
+      "Liability cap inadequacy",
+      "Ownership of deliverables",
+      "Excessive payment terms",
+      "Insufficient confidentiality term"
+    ]
+  },
+  "analysis_metadata": {
+    "timestamp": "2025-10-03T14:34:26.853990",
+    "style_params": {
+      "tone": "concise",
+      "formality": "legal",
+      "aggressiveness": "strict",
+      "audience": "internal"
+    },
+    "model": "gpt-4o",
+    "contract_length": 771,
+    "policies_checked": 41
+  }
+}
