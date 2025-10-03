@@ -35,7 +35,7 @@ class EditorAgent:
     def __init__(self):
         # Use Sonnet 3.5 for structured edit generation
         self.llm = ChatOpenAI(
-            model="gpt-4o",  # Balanced model for precise edits
+            model="gpt-4o-mini",  # Balanced model for precise edits
             max_tokens=1024,  # Track-change JSON responses
             temperature=0.1,  # Low temperature for precise positioning
             timeout=30,

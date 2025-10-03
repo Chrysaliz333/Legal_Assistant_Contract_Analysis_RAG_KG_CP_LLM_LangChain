@@ -43,7 +43,7 @@ class NeutralRationaleAgent:
     def __init__(self):
         # Use Sonnet 3.5 for balanced speed/quality in rationale generation
         self.llm = ChatOpenAI(
-            model="gpt-4o",  # Balanced model for objective analysis
+            model="gpt-4o-mini",  # Balanced model for objective analysis
             max_tokens=1024,  # Rationale + proposed change
             temperature=0.2,  # Low temperature for neutral, objective output
             timeout=30,
