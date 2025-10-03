@@ -104,6 +104,9 @@ async def analyze_contract_async(contract_text, contract_type, orientation, styl
         if not clauses:
             return None, "❌ No clauses could be extracted from the contract. Please check that your document has clear section headers (e.g., '1.', 'Section 1:', 'PAYMENT TERMS')."
 
+        # Debug: Log clause extraction
+        st.info(f"✅ Extracted {len(clauses)} clauses from contract")
+
         # Load policies
         policies = get_policies_for_contract(
             contract_type=contract_type,
@@ -112,6 +115,9 @@ async def analyze_contract_async(contract_text, contract_type, orientation, styl
 
         if not policies:
             return None, "❌ No policies found for this contract type and orientation."
+
+        # Debug: Log policy loading
+        st.info(f"✅ Loaded {len(policies)} policies for checking")
 
         # Run workflow
         workflow = ContractAnalysisWorkflow(enable_checkpointing=False)
@@ -124,6 +130,17 @@ async def analyze_contract_async(contract_text, contract_type, orientation, styl
             policies=policies,
             style_params=style_params
         )
+
+        # Debug: Log result summary
+        findings_count = len(result.get('findings', []))
+        errors_count = len(result.get('errors', []))
+        st.info(f"✅ Analysis complete: {findings_count} findings, {errors_count} errors")
+
+        # Show errors if any
+        if errors_count > 0:
+            st.warning(f"⚠️ {errors_count} errors occurred during analysis:")
+            for error in result.get('errors', []):
+                st.error(error)
 
         return result, None
 
