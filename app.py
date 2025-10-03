@@ -104,8 +104,15 @@ async def analyze_contract_async(contract_text, contract_type, orientation, styl
         if not clauses:
             return None, "❌ No clauses could be extracted from the contract. Please check that your document has clear section headers (e.g., '1.', 'Section 1:', 'PAYMENT TERMS')."
 
-        # Debug: Log clause extraction
+        # Debug: Log clause extraction with type breakdown
+        clause_types = {}
+        for c in clauses:
+            ctype = c.get('clause_type', 'unknown')
+            clause_types[ctype] = clause_types.get(ctype, 0) + 1
+
+        clause_type_summary = ", ".join([f"{k}: {v}" for k, v in sorted(clause_types.items())])
         st.info(f"✅ Extracted {len(clauses)} clauses from contract")
+        st.info(f"📋 Clause types: {clause_type_summary}")
 
         # Load policies
         policies = get_policies_for_contract(
