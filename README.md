@@ -422,12 +422,9 @@ MIT License - see [LICENSE](LICENSE) file
 
 ---
 
-**Built with ❤️ for the legal technology community**
-
-**Ready to transform contract negotiations!** 🚀
-
 For getting started, see [docs/QUICKSTART.md](docs/QUICKSTART.md)
 
 For implementation details, see [docs/IMPLEMENTATION_GUIDE.md](docs/IMPLEMENTATION_GUIDE.md)
 
 For current status, see [PROJECT_STATUS.md](PROJECT_STATUS.md)
+
