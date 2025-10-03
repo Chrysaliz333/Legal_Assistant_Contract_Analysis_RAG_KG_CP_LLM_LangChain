@@ -2,12 +2,12 @@
 # Only what's needed for the web UI
 
 # Core AI
-anthropic==0.39.0
-langchain==0.3.0
-langchain-anthropic==0.2.0
-langchain-community==0.3.0
-langchain-core==0.3.0
-langgraph==0.2.28
+anthropic>=0.39.0
+langchain>=0.3.0
+langchain-anthropic>=0.3.0
+langchain-community>=0.3.0
+langchain-core>=0.3.0
+langgraph>=0.2.28
 
 # Web UI
 streamlit==1.50.0
