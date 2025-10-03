@@ -10,6 +10,13 @@ from datetime import datetime
 import tempfile
 import os
 
+# Set API key from Streamlit secrets before importing other modules
+if "ANTHROPIC_API_KEY" in st.secrets:
+    os.environ["ANTHROPIC_API_KEY"] = st.secrets["ANTHROPIC_API_KEY"]
+elif not os.getenv("ANTHROPIC_API_KEY"):
+    st.error("⚠️ ANTHROPIC_API_KEY not found. Please add it to Streamlit Cloud Secrets.")
+    st.stop()
+
 # Import analysis functions
 from quick_analyze import extract_clauses_simple
 from src.agents.workflow import ContractAnalysisWorkflow
