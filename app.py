@@ -97,31 +97,40 @@ def parse_uploaded_file(uploaded_file):
 async def analyze_contract_async(contract_text, contract_type, orientation, style_params):
     """Run async analysis"""
 
-    # Extract clauses
-    clauses = extract_clauses_simple(contract_text)
+    try:
+        # Extract clauses
+        clauses = extract_clauses_simple(contract_text)
 
-    if not clauses:
-        return None, "No clauses could be extracted from the contract"
+        if not clauses:
+            return None, "❌ No clauses could be extracted from the contract. Please check that your document has clear section headers (e.g., '1.', 'Section 1:', 'PAYMENT TERMS')."
 
-    # Load policies
-    policies = get_policies_for_contract(
-        contract_type=contract_type,
-        model_orientation=orientation
-    )
+        # Load policies
+        policies = get_policies_for_contract(
+            contract_type=contract_type,
+            model_orientation=orientation
+        )
 
-    # Run workflow
-    workflow = ContractAnalysisWorkflow(enable_checkpointing=False)
+        if not policies:
+            return None, "❌ No policies found for this contract type and orientation."
 
-    result = await workflow.analyze_contract(
-        version_id=f"web-{datetime.now().strftime('%Y%m%d-%H%M%S')}",
-        session_id=f"session-{datetime.now().strftime('%Y%m%d-%H%M%S')}",
-        contract_text=contract_text,
-        clauses=clauses,
-        policies=policies,
-        style_params=style_params
-    )
+        # Run workflow
+        workflow = ContractAnalysisWorkflow(enable_checkpointing=False)
 
-    return result, None
+        result = await workflow.analyze_contract(
+            version_id=f"web-{datetime.now().strftime('%Y%m%d-%H%M%S')}",
+            session_id=f"session-{datetime.now().strftime('%Y%m%d-%H%M%S')}",
+            contract_text=contract_text,
+            clauses=clauses,
+            policies=policies,
+            style_params=style_params
+        )
+
+        return result, None
+
+    except Exception as e:
+        import traceback
+        error_details = traceback.format_exc()
+        return None, f"❌ Analysis error: {str(e)}\n\nDetails:\n{error_details}"
 
 
 def display_results(result):
