@@ -7,6 +7,7 @@ import streamlit as st
 import asyncio
 from pathlib import Path
 from datetime import datetime
+from collections import defaultdict
 import tempfile
 import os
 
@@ -266,6 +267,61 @@ def display_results(result):
                         st.markdown(f'- **{ins.get("inserted_text", "")}**')
 
 
+def display_negotiation_history(orchestrator, project_id: str) -> None:
+    """Render contract version timeline with diff snippets and agent events."""
+
+    st.markdown("---")
+    st.markdown("### 🗂️ Negotiation History")
+
+    history = orchestrator.memory.get_version_history(project_id)
+    if not history:
+        st.info("Upload additional revisions to build the negotiation timeline.")
+        return
+
+    events_by_version = defaultdict(list)
+    for event in orchestrator.memory.get_agent_events(project_id):
+        events_by_version[event.get('version_id', '')].append(event)
+
+    with st.expander("View timeline", expanded=True):
+        for idx, record in enumerate(reversed(history), start=1):
+            created_at = record.get('created_at')
+            try:
+                created_display = (
+                    datetime.fromisoformat(created_at).strftime('%Y-%m-%d %H:%M UTC')
+                    if created_at
+                    else 'unknown'
+                )
+            except ValueError:
+                created_display = created_at or 'unknown'
+
+            st.markdown(f"#### Version {record.get('version_id', 'unknown')}")
+            st.caption(
+                f"Source: `{record.get('source', 'unknown')}` • Recorded {created_display}"
+            )
+
+            if record.get('notes'):
+                st.write(record['notes'])
+
+            diff_snippet = record.get('diff_summary')
+            if diff_snippet:
+                st.code(diff_snippet, language='diff')
+            else:
+                st.caption("No diff available (initial upload or unchanged).")
+
+            events = events_by_version.get(record.get('version_id', ''), [])
+            if events:
+                st.caption("Agent activity")
+                for event in events:
+                    task_type = event.get('payload', {}).get('task_type')
+                    descriptor = f" – {task_type}" if task_type else ''
+                    st.write(
+                        f"• {event.get('timestamp', '')}: {event.get('agent')}"
+                        f" {event.get('action')}{descriptor}"
+                    )
+
+            if idx < len(history):
+                st.markdown('---')
+
 def main():
     """Main Streamlit app"""
 
@@ -276,6 +332,10 @@ def main():
     # Sidebar - Configuration
     with st.sidebar:
         st.markdown("## ⚙️ Configuration")
+
+        orchestrator = st.session_state["orchestrator"]
+        project_id = st.session_state["project_id"]
+        session_id = st.session_state["session_id"]
 
         contract_type = st.selectbox(
             "Contract Type",
@@ -303,6 +363,37 @@ def main():
             'aggressiveness': aggressiveness,
             'audience': audience
         }
+
+        st.markdown("### 🧭 Saved Preferences")
+        saved_prefs = orchestrator.memory.get_preferences(project_id, session_id)
+        if saved_prefs:
+            for key, payload in sorted(saved_prefs.items()):
+                value = payload.get('value')
+                updated = payload.get('updated_at', '')
+                st.caption(f"`{key}` → {value} (updated {updated})")
+        else:
+            st.caption("No saved preferences yet. Add one below.")
+
+        with st.form("preference_form", clear_on_submit=True):
+            pref_key = st.text_input("Preference Key", placeholder="e.g., style.tone")
+            pref_value = st.text_input("Preference Value", placeholder="e.g., concise")
+            pref_reason = st.text_area("Rationale (optional)", height=60)
+            submitted = st.form_submit_button("Save Preference")
+
+        if submitted:
+            if pref_key and pref_value:
+                orchestrator.memory.record_preference(
+                    project_id=project_id,
+                    user_id=session_id,
+                    key=pref_key,
+                    value=pref_value,
+                    rationale=pref_reason or None,
+                    source="ui",
+                )
+                st.success(f"Preference `{pref_key}` saved.")
+                st.experimental_rerun()
+            else:
+                st.warning("Please provide both a key and value before saving.")
 
         st.markdown("---")
         st.markdown("### 📚 About")
@@ -367,6 +458,7 @@ def main():
             # Display results
             st.success("✅ Analysis complete!")
             display_results(result)
+            display_negotiation_history(st.session_state["orchestrator"], st.session_state["project_id"])
 
             # Download results
             st.markdown("---")
@@ -378,6 +470,9 @@ def main():
             )
 
     else:
+        # Show existing timeline (if any) even without active upload
+        display_negotiation_history(st.session_state["orchestrator"], st.session_state["project_id"])
+
         # Show instructions
         st.markdown("### 👋 Get Started")
         st.markdown("""

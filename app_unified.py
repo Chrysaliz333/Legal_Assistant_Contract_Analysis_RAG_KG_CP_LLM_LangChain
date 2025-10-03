@@ -125,16 +125,16 @@ async def analyze_contract_async(contract_text, style_params):
         # Load policies
         all_policies = get_all_policies()
 
-        # Convert to unified agent format
+        # Convert to unified agent format and limit to top 15 most important
         policies = []
-        for p in all_policies:
+        for p in all_policies[:15]:  # Limit policies to prevent timeout
             policies.append({
                 'policy_id': p['policy_id'],
                 'title': p.get('policy_category', 'General Policy'),
                 'requirement': p['policy_text']
             })
 
-        st.info(f"📋 Loaded {len(policies)} policies for checking")
+        st.info(f"📋 Loaded {len(policies)} policies for checking (limited to top 15 for performance)")
 
         # Create unified agent
         agent = UnifiedContractAgent(style_params=style_params)

@@ -44,7 +44,8 @@ class UnifiedContractAgent:
             model="gpt-4o-mini",  # Fast and cost-effective
             max_tokens=4096,  # Need space for full contract + analysis
             temperature=0.2,  # Low temp for consistency
-            timeout=30,
+            timeout=120,  # Longer timeout for large contracts
+            request_timeout=120,
             openai_api_key=settings.OPENAI_API_KEY
         )
 
@@ -209,9 +210,9 @@ Be thorough but focused. Quality over quantity."""
     ) -> str:
         """Build user prompt with contract and context"""
 
-        # Format policies
+        # Format policies (concise to reduce token count)
         policy_list = "\n".join([
-            f"- {p['policy_id']}: {p['title']} - {p['requirement']}"
+            f"- {p['policy_id']}: {p['requirement'][:150]}..."  # Truncate long policies
             for p in policies
         ])
 
