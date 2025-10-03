@@ -269,9 +269,20 @@ Analyze the contract above. Return JSON with findings and suggested edits."""
     def _get_audience_instruction(self, audience: str) -> str:
         """Get audience-specific instructions"""
         if audience == "internal":
-            return "**AUDIENCE: Internal Legal Team** - Use legal abbreviations (LoL, IP, SLA). Reference internal policy IDs directly."
+            return """**AUDIENCE: Internal Legal Team**
+- Use legal abbreviations (LoL, IP, SLA)
+- Reference internal policy IDs directly (e.g., "Policy LP-401 requires...")
+- Include policy numbers in issue_explanation and rationale
+- Use internal shorthand"""
         else:  # counterparty
-            return "**AUDIENCE: Counterparty/External** - Spell out abbreviations. No internal policy IDs. Professional but accessible."
+            return """**AUDIENCE: Counterparty/External**
+- CRITICAL: DO NOT mention internal policy IDs anywhere
+- DO NOT include policy numbers in issue_explanation or rationale
+- Instead of "Policy LP-401 requires...", say "Our standard requirement is..."
+- Instead of "per Policy IP-203", say "to align with our standard terms"
+- Spell out ALL abbreviations (Limitation of Liability, not LoL)
+- Use business-friendly language
+- Keep policy_violated field for internal tracking, but NEVER mention it in explanations"""
 
     def get_stats(self, analysis_result: Dict) -> Dict:
         """Extract statistics from analysis result"""

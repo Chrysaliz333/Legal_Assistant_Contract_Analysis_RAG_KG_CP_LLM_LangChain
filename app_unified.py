@@ -14,6 +14,10 @@ import json
 # Set API key from Streamlit secrets or environment
 if "OPENAI_API_KEY" in st.secrets:
     os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
+elif not os.getenv("OPENAI_API_KEY"):
+    st.error("⚠️ OPENAI_API_KEY not found. Please add it to Streamlit Cloud Secrets.")
+    st.info("Go to: Settings → Secrets → Add `OPENAI_API_KEY = \"your-key-here\"`")
+    st.stop()
 
 # Import unified agent
 from src.agents.unified_agent import UnifiedContractAgent
@@ -291,6 +295,18 @@ def main():
     # Sidebar - Style Configuration
     st.sidebar.header("⚙️ Analysis Settings")
 
+    st.sidebar.markdown("### Party Representation")
+
+    party = st.sidebar.selectbox(
+        "You are representing:",
+        ["buyer", "seller"],
+        index=0,
+        help="Are you representing the buyer (customer) or seller (vendor)?"
+    )
+
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("### Communication Style")
+
     tone = st.sidebar.selectbox(
         "Tone",
         ["concise", "balanced", "verbose"],
@@ -320,6 +336,7 @@ def main():
     )
 
     style_params = {
+        'party': party,
         'tone': tone,
         'formality': formality,
         'aggressiveness': aggressiveness,
@@ -328,7 +345,7 @@ def main():
 
     # Display current style
     st.sidebar.markdown("---")
-    st.sidebar.markdown("**Current Style:**")
+    st.sidebar.markdown("**Current Configuration:**")
     st.sidebar.json(style_params)
 
     # File upload
