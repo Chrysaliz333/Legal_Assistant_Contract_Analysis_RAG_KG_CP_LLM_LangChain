@@ -33,10 +33,11 @@ class EditorAgent:
     """
 
     def __init__(self):
+        # Use Sonnet 3.5 for structured edit generation
         self.llm = ChatAnthropic(
-            model=settings.CLAUDE_MODEL,
-            max_tokens=settings.CLAUDE_MAX_TOKENS,
-            temperature=settings.CLAUDE_TEMPERATURE,
+            model="claude-3-5-sonnet-20241022",  # Balanced model for precise edits
+            max_tokens=1024,  # Track-change JSON responses
+            temperature=0.1,  # Low temperature for precise positioning
             timeout=settings.CLAUDE_TIMEOUT,
             anthropic_api_key=settings.ANTHROPIC_API_KEY
         )

@@ -76,10 +76,35 @@ def get_all_policies(model_orientation: str = None) -> List[Dict]:
     cursor.execute(query, params)
 
     for row in cursor.fetchall():
-        # Parse JSON fields
-        contract_types = json.loads(row['applicable_contract_types']) if row['applicable_contract_types'] else []
-        clauses = json.loads(row['applicable_clauses']) if row['applicable_clauses'] else []
-        conditions = json.loads(row['conditions']) if row['conditions'] else {}
+        # Parse fields - handle both JSON and comma-separated strings
+        contract_types_raw = row['applicable_contract_types']
+        if contract_types_raw:
+            try:
+                contract_types = json.loads(contract_types_raw)
+            except json.JSONDecodeError:
+                # Fallback: comma-separated string
+                contract_types = [t.strip() for t in contract_types_raw.split(',')]
+        else:
+            contract_types = []
+
+        clauses_raw = row['applicable_clauses']
+        if clauses_raw:
+            try:
+                clauses = json.loads(clauses_raw)
+            except json.JSONDecodeError:
+                # Fallback: comma-separated string
+                clauses = [c.strip() for c in clauses_raw.split(',')]
+        else:
+            clauses = []
+
+        conditions_raw = row['conditions']
+        if conditions_raw:
+            try:
+                conditions = json.loads(conditions_raw)
+            except json.JSONDecodeError:
+                conditions = {}
+        else:
+            conditions = {}
 
         # Use first applicable clause as category (for compatibility with agents)
         category = clauses[0] if clauses else None

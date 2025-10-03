@@ -34,10 +34,11 @@ class DiligentReviewerAgent:
     """
 
     def __init__(self):
+        # Use Haiku for fast, cheap policy checking (75% faster than Sonnet)
         self.llm = ChatAnthropic(
-            model=settings.CLAUDE_MODEL,
-            max_tokens=settings.CLAUDE_MAX_TOKENS,
-            temperature=settings.CLAUDE_TEMPERATURE,
+            model="claude-3-5-haiku-20241022",  # Fast model for simple compliance checks
+            max_tokens=512,  # Simple JSON responses
+            temperature=0.1,  # Low temperature for consistent policy checking
             timeout=settings.CLAUDE_TIMEOUT,
             anthropic_api_key=settings.ANTHROPIC_API_KEY
         )
@@ -90,7 +91,8 @@ class DiligentReviewerAgent:
                 start_time = time.time()
 
                 # Semaphore limits concurrent LLM calls to prevent rate limiting
-                semaphore = asyncio.Semaphore(3)  # Max 3 concurrent calls
+                # Increased to 10 for better throughput with Haiku (faster model)
+                semaphore = asyncio.Semaphore(10)  # Max 10 concurrent calls
 
                 async def check_with_limit(clause, policy):
                     """Wrapper to enforce concurrency limit"""
