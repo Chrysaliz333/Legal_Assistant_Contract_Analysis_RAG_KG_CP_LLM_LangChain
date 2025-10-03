@@ -1,0 +1,172 @@
+# ============================================================================
+# Legal Assistant Multi-Session Continuity - Updated Requirements
+# Python 3.10.11+
+# ============================================================================
+
+# Core AI and Machine Learning - MIGRATION TO CLAUDE
+# ---------------------------------------------------------
+anthropic==0.39.0                    # Claude Sonnet 4.5 SDK (replacing OpenAI)
+langchain==0.3.0                     # Updated LangChain
+langchain-anthropic==0.2.0           # Claude integration for LangChain
+langchain-community==0.3.0           # Community integrations
+langchain-core==0.3.0                # Core abstractions
+langgraph==0.2.28                    # Multi-agent orchestration (REQ-ARCH-004)
+
+# Previous OpenAI deps (keep for gradual migration)
+# langchain-openai==0.0.6
+# openai==1.12.0
+
+# Web Framework and API
+# ---------------------------------------------------------
+fastapi==0.115.0                     # REQ-ARCH-003: REST API framework
+uvicorn[standard]==0.30.0            # ASGI server
+pydantic==2.9.0                      # Data validation
+pydantic-settings==2.5.0             # Settings management
+python-multipart==0.0.12             # File upload support
+
+# Database - PostgreSQL
+# ---------------------------------------------------------
+sqlalchemy==2.0.35                   # ORM (REQ-ARCH-002)
+asyncpg==0.29.0                      # Async PostgreSQL driver
+alembic==1.13.3                      # Database migrations
+psycopg2-binary==2.9.9               # PostgreSQL adapter
+
+# Database - Vector Storage
+# ---------------------------------------------------------
+chromadb==0.5.11                     # Vector database for embeddings (REQ-ARCH-002)
+# qdrant-client==1.11.3              # Alternative vector DB
+
+# Caching and Session Management
+# ---------------------------------------------------------
+redis==5.0.8                         # REQ-ARCH-002: Cache layer
+hiredis==2.3.2                       # Redis performance boost
+
+# Document Processing
+# ---------------------------------------------------------
+python-docx==1.1.2                   # REQ-SE-001: Word document manipulation
+python-pptx==1.0.2                   # PowerPoint support (optional)
+PyPDF2==3.0.1                        # PDF processing
+pdfplumber==0.11.4                   # Enhanced PDF text extraction
+docx2pdf==0.1.8                      # DOCX to PDF conversion
+
+# NLP and Text Processing
+# ---------------------------------------------------------
+spacy==3.7.6                         # REQ-OE-001: Obligation extraction
+# Run: python -m spacy download en_core_web_sm
+sentence-transformers==3.1.1         # Semantic embeddings
+transformers==4.45.2                 # Hugging Face models
+nltk==3.9.1                          # Natural language toolkit
+dateparser==1.2.0                    # REQ-OE-001: Deadline parsing
+textblob==0.18.0                     # REQ-NR-001: Sentiment analysis
+
+# Data Processing and Analysis
+# ---------------------------------------------------------
+pandas==2.2.3                        # Data manipulation
+numpy==1.26.4                        # Numerical computing
+scikit-learn==1.5.2                  # REQ-EM-001: DBSCAN clustering
+
+# Visualization
+# ---------------------------------------------------------
+matplotlib==3.9.2                    # Plotting
+networkx==3.3                        # Knowledge graph
+plotly==5.24.1                       # Interactive visualizations
+
+# Web and API Integration
+# ---------------------------------------------------------
+requests==2.32.3                     # HTTP client
+httpx==0.27.2                        # Async HTTP client
+tavily-python==0.5.0                 # Legal research (existing)
+aiohttp==3.10.8                      # Async HTTP
+
+# Authentication and Security
+# ---------------------------------------------------------
+python-jose[cryptography]==3.3.0     # JWT tokens
+passlib[bcrypt]==1.7.4               # Password hashing
+python-dotenv==1.0.1                 # Environment variables
+cryptography==43.0.1                 # Encryption
+
+# Monitoring and Observability
+# ---------------------------------------------------------
+opentelemetry-api==1.27.0            # REQ-ARCH-004: Distributed tracing
+opentelemetry-sdk==1.27.0
+opentelemetry-instrumentation-fastapi==0.48b0
+prometheus-client==0.21.0            # Metrics collection
+sentry-sdk[fastapi]==2.14.0          # Error tracking
+
+# Testing
+# ---------------------------------------------------------
+pytest==8.3.3                        # Test framework
+pytest-asyncio==0.24.0               # Async test support
+pytest-cov==5.0.0                    # Coverage reporting
+pytest-mock==3.14.0                  # Mocking
+httpx==0.27.2                        # API testing
+faker==30.1.0                        # Test data generation
+locust==2.31.6                       # REQ-NFR-002: Load testing
+
+# Development Tools
+# ---------------------------------------------------------
+black==24.8.0                        # Code formatting
+isort==5.13.2                        # Import sorting
+flake8==7.1.1                        # Linting
+mypy==1.11.2                         # Type checking
+pre-commit==3.8.0                    # Git hooks
+
+# Jupyter and Interactive Development
+# ---------------------------------------------------------
+jupyter==1.1.1                       # Notebook environment
+ipywidgets==8.1.5                    # Interactive widgets
+IPython==8.27.0                      # Enhanced REPL
+
+# Logging and Utilities
+# ---------------------------------------------------------
+loguru==0.7.2                        # Enhanced logging
+pyyaml==6.0.2                        # YAML parsing
+jinja2==3.1.4                        # REQ-SE-006: Template engine
+click==8.1.7                         # CLI framework
+tqdm==4.66.5                         # Progress bars
+python-magic==0.4.27                 # File type detection
+
+# Type Hints and Development
+# ---------------------------------------------------------
+typing-extensions==4.12.2            # Extended type hints
+types-requests==2.32.0.20240914      # Type stubs
+
+# Cloud Storage (Optional - for S3 integration)
+# ---------------------------------------------------------
+boto3==1.35.24                       # AWS SDK
+botocore==1.35.24
+
+# Additional Utilities
+# ---------------------------------------------------------
+uuid==1.30                           # UUID generation
+hashlib                              # Built-in (hashing)
+intervaltree==3.1.0                  # REQ-SE-003: Conflict detection
+jsonschema==4.23.0                   # REQ-NR-005: Schema validation
+
+# Email Integration (REQ-OE-001)
+# ---------------------------------------------------------
+sendgrid==6.11.0                     # Email delivery
+python-email-validator==2.2.0        # Email validation
+
+# Background Tasks
+# ---------------------------------------------------------
+celery==5.4.0                        # REQ-PD-001: Background job processing
+redis==5.0.8                         # Celery broker
+
+# Documentation
+# ---------------------------------------------------------
+mkdocs==1.6.1                        # Documentation generation
+mkdocs-material==9.5.37              # Material theme
+
+# ============================================================================
+# INSTALLATION NOTES:
+# ============================================================================
+# 1. Install Python 3.10.11+
+# 2. Create virtual environment: python -m venv venv
+# 3. Activate: source venv/bin/activate (Unix) or venv\Scripts\activate (Windows)
+# 4. Install: pip install -r requirements-new.txt
+# 5. Install spaCy model: python -m spacy download en_core_web_sm
+# 6. Set up PostgreSQL and Redis
+# 7. Configure .env file with API keys and database URLs
+# ============================================================================
+streamlit
