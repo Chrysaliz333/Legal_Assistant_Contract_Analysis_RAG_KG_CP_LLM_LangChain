@@ -169,3 +169,4 @@ mkdocs-material==9.5.37              # Material theme
 # 6. Set up PostgreSQL and Redis
 # 7. Configure .env file with API keys and database URLs
 # ============================================================================
+streamlit
