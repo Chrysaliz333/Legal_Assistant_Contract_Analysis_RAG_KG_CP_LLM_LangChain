@@ -1,0 +1,60 @@
+MASTER SERVICES AGREEMENT
+
+This Master Services Agreement ("Agreement") is entered into as of March 15, 2024 ("Effective Date") between TechCorp Solutions, Inc. ("Client") and DataVendor Systems LLC ("Contractor").
+
+1. LIMITATION OF LIABILITY
+
+Contractor's total liability under this Agreement shall not exceed the amount of fees paid by Client in the twelve (12) months preceding the claim. This limitation applies to all claims, regardless of the form of action.
+
+2. INTELLECTUAL PROPERTY OWNERSHIP
+
+All work product, deliverables, inventions, discoveries, and improvements created by Contractor in the course of providing Services shall remain the property of Contractor. Client is granted a non-exclusive, revocable license to use such work product solely for Client's internal business purposes. This license may be terminated by Contractor upon thirty (30) days written notice.
+
+3. TERMINATION
+
+Either party may terminate this Agreement for any reason or no reason upon thirty (30) days prior written notice to the other party. Upon termination, Client shall pay all outstanding fees and expenses within ninety (90) days of the termination date.
+
+4. CONFIDENTIALITY
+
+Each party agrees to maintain the confidentiality of the other party's Confidential Information disclosed during the term of this Agreement. The receiving party shall use the same degree of care to protect the disclosing party's Confidential Information as it uses to protect its own confidential information, but in no event less than reasonable care. This obligation shall survive for a period of two (2) years following the disclosure of the Confidential Information.
+
+5. DATA PROTECTION AND PRIVACY
+
+Contractor shall process Client data in accordance with applicable data protection laws. Contractor may transfer Client data to third-party service providers located outside the European Economic Area without prior notice to Client. Data retention period shall be determined solely by Contractor based on its operational needs.
+
+6. PAYMENT TERMS
+
+Client shall pay all invoices within sixty (60) days of receipt. Late payments shall accrue interest at a rate of 2% per month. All fees are non-refundable once Services have commenced.
+
+7. WARRANTY DISCLAIMER
+
+CONTRACTOR PROVIDES ALL SERVICES "AS IS" WITHOUT ANY WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. CONTRACTOR DOES NOT WARRANT THAT SERVICES WILL BE UNINTERRUPTED OR ERROR-FREE.
+
+8. GOVERNING LAW AND DISPUTE RESOLUTION
+
+This Agreement shall be governed by the laws of the Cayman Islands. Any disputes arising under this Agreement shall be resolved exclusively through arbitration in George Town, Cayman Islands, with each party bearing its own costs and expenses. The arbitration shall be conducted in Russian.
+
+9. INDEMNIFICATION
+
+Client shall indemnify, defend, and hold harmless Contractor from any and all claims, damages, losses, and expenses (including reasonable attorneys' fees) arising from Client's use of the Services, regardless of whether such claims result from Contractor's negligence or breach of this Agreement.
+
+10. ASSIGNMENT
+
+Contractor may freely assign this Agreement or any of its rights or obligations hereunder to any third party without Client's consent. Client may not assign this Agreement without Contractor's prior written consent, which may be withheld in Contractor's sole discretion.
+
+11. AUTOMATIC RENEWAL
+
+This Agreement shall automatically renew for successive one-year terms unless either party provides written notice of non-renewal at least one hundred eighty (180) days prior to the end of the then-current term. Contractor reserves the right to increase fees upon renewal by up to 25% without additional notice.
+
+12. SERVICE LEVEL AGREEMENT
+
+Contractor commits to 95% uptime for Services, measured on an annual basis. In the event of failure to meet this commitment, Client's sole remedy shall be a service credit equal to 2% of the monthly fee for the affected month. No other remedies or damages shall be available.
+
+IN WITNESS WHEREOF, the parties have executed this Agreement as of the Effective Date.
+
+TechCorp Solutions, Inc.                    DataVendor Systems LLC
+
+By: _________________________              By: _________________________
+    Sarah Johnson                             Michael Chen
+    Chief Procurement Officer                 Chief Revenue Officer
+    Date: March 15, 2024                      Date: March 15, 2024
