@@ -87,7 +87,11 @@ class DiligentReviewerAgent:
                     pairs_to_check.append((clause, policy))
 
             # Parallel execution with bounded concurrency
-            print(f"🔍 DiligentReviewer: Found {len(pairs_to_check)} clause-policy pairs to check")
+            pairs_count = len(pairs_to_check)
+            print(f"🔍 DiligentReviewer: Found {pairs_count} clause-policy pairs to check")
+
+            # Add to errors list so it shows in UI
+            state['errors'].append(f"DEBUG: Checking {pairs_count} clause-policy pairs")
 
             if pairs_to_check:
                 start_time = time.time()
