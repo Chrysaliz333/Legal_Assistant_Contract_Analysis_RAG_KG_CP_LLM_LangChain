@@ -41,10 +41,10 @@ class UnifiedContractAgent:
             style_params: Optional style configuration (tone, formality, aggressiveness, audience)
         """
         self.llm = ChatOpenAI(
-            model="gpt-4o",  # Use full GPT-4o for better reasoning
+            model="gpt-4o-mini",  # Fast and cost-effective
             max_tokens=4096,  # Need space for full contract + analysis
             temperature=0.2,  # Low temp for consistency
-            timeout=60,
+            timeout=30,
             openai_api_key=settings.OPENAI_API_KEY
         )
 
@@ -87,13 +87,27 @@ class UnifiedContractAgent:
 
         # Parse structured response
         try:
-            result = json.loads(response.content)
+            # Clean up response (remove markdown code blocks if present)
+            content = response.content.strip()
+
+            # Remove markdown code blocks
+            if content.startswith('```'):
+                # Remove opening ```json or ```
+                lines = content.split('\n')
+                if lines[0].startswith('```'):
+                    lines = lines[1:]
+                # Remove closing ```
+                if lines and lines[-1].strip() == '```':
+                    lines = lines[:-1]
+                content = '\n'.join(lines)
+
+            result = json.loads(content)
 
             # Add metadata
             result['analysis_metadata'] = {
                 'timestamp': datetime.utcnow().isoformat(),
                 'style_params': self.style_params,
-                'model': 'gpt-4o',
+                'model': 'gpt-4o-mini',
                 'contract_length': len(contract_text),
                 'policies_checked': len(policies)
             }

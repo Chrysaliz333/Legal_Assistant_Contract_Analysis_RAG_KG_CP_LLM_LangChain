@@ -19,8 +19,8 @@ elif not os.getenv("ANTHROPIC_API_KEY"):
 
 # Import analysis functions
 from quick_analyze import extract_clauses_simple
-from src.agents.workflow import ContractAnalysisWorkflow
 from get_policies import get_policies_for_contract
+from src.orchestration import AdaptiveOrchestrator
 
 # Page config
 st.set_page_config(
@@ -50,6 +50,14 @@ st.markdown("""
     .low { color: #98df8a; font-weight: bold; }
 </style>
 """, unsafe_allow_html=True)
+
+# Initialize session-level orchestration state for negotiation tracking
+if "project_id" not in st.session_state:
+    st.session_state["project_id"] = f"project-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
+if "session_id" not in st.session_state:
+    st.session_state["session_id"] = f"session-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
+if "orchestrator" not in st.session_state:
+    st.session_state["orchestrator"] = AdaptiveOrchestrator()
 
 
 def parse_uploaded_file(uploaded_file):
@@ -94,7 +102,7 @@ def parse_uploaded_file(uploaded_file):
             os.remove(tmp_path)
 
 
-async def analyze_contract_async(contract_text, contract_type, orientation, style_params):
+async def analyze_contract_async(contract_text, contract_type, orientation, style_params, project_id, session_id, orchestrator):
     """Run async analysis"""
 
     try:
@@ -126,17 +134,27 @@ async def analyze_contract_async(contract_text, contract_type, orientation, styl
         # Debug: Log policy loading
         st.info(f"✅ Loaded {len(policies)} policies for checking")
 
-        # Run workflow
-        workflow = ContractAnalysisWorkflow(enable_checkpointing=False)
+        version_id = f"{session_id}-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
+        preference_payload = {
+            f"style.{key}": value for key, value in (style_params or {}).items()
+        }
 
-        result = await workflow.analyze_contract(
-            version_id=f"web-{datetime.now().strftime('%Y%m%d-%H%M%S')}",
-            session_id=f"session-{datetime.now().strftime('%Y%m%d-%H%M%S')}",
+        context_id = orchestrator.ingest_contract(
+            project_id=project_id,
+            session_id=session_id,
+            version_id=version_id,
             contract_text=contract_text,
             clauses=clauses,
             policies=policies,
-            style_params=style_params
+            preferences=preference_payload if preference_payload else None,
+            style_params=style_params,
         )
+
+        await orchestrator.run(max_iterations=50)
+        result = orchestrator.build_result(context_id)
+
+        if not result:
+            return None, "❌ Unable to retrieve analysis results from orchestrator."
 
         # Debug: Log result summary
         findings_count = len(result.get('findings', []))
@@ -329,9 +347,17 @@ def main():
                 st.text(contract_text[:500] + "...")
 
             # Run analysis
-            with st.spinner("🤖 Running 4-agent analysis... This may take 1-2 minutes..."):
+            with st.spinner("🤖 Running adaptive multi-agent analysis..."):
                 result, error = asyncio.run(
-                    analyze_contract_async(contract_text, contract_type, orientation, style_params)
+                    analyze_contract_async(
+                        contract_text,
+                        contract_type,
+                        orientation,
+                        style_params,
+                        st.session_state["project_id"],
+                        st.session_state["session_id"],
+                        st.session_state["orchestrator"],
+                    )
                 )
 
             if error:

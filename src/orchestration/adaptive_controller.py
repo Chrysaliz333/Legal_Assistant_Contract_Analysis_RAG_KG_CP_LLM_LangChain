@@ -80,6 +80,7 @@ class AdaptiveOrchestrator:
         notes: Optional[str] = None,
         graph_snapshot: Optional[str] = None,
         preferences: Optional[Dict[str, Any]] = None,
+        style_params: Optional[Dict[str, Any]] = None,
     ) -> str:
         """Register a new contract version and seed initial tasks."""
 
@@ -113,6 +114,7 @@ class AdaptiveOrchestrator:
             contract_text=contract_text,
             clauses=clauses,
             policies=policies,
+            style_params=style_params,
         )
         self.memory.store_context(context_id, context)
 
@@ -194,6 +196,32 @@ class AdaptiveOrchestrator:
                 self.tasks.mark_complete(task.task_id, {"error": str(exc)})
             iterations += 1
 
+    def get_context(self, context_id: str) -> Optional[AnalysisContext]:
+        stored = self.memory.get_context(context_id)
+        return stored  # type: ignore[return-value]
+
+    def build_result(self, context_id: str) -> Optional[Dict[str, Any]]:
+        context = self.get_context(context_id)
+        if context is None:
+            return None
+        summary = self._build_summary(context)
+        return {
+            "version_id": context.get("version_id"),
+            "session_id": context.get("session_id"),
+            "workflow_stage": context.get("workflow_stage"),
+            "analysis_summary": summary,
+            "findings": context.get("findings", []),
+            "neutral_rationales": context.get("neutral_rationales", []),
+            "transformed_rationales": context.get("transformed_rationales", []),
+            "suggested_edits": context.get("suggested_edits", []),
+            "errors": context.get("errors", []),
+            "metadata": {
+                "started_at": context.get("started_at"),
+                "completed_at": context.get("updated_at"),
+                "current_agent": context.get("current_agent"),
+            },
+        }
+
     # ------------------------------------------------------------------
     # Helpers
     # ------------------------------------------------------------------
@@ -242,6 +270,32 @@ class AdaptiveOrchestrator:
         )
         snippet = "\n".join(list(diff_lines)[:20])
         return snippet or None
+
+    def _build_summary(self, context: AnalysisContext) -> Dict[str, Any]:
+        findings = context.get("findings", [])
+        rationales = context.get("neutral_rationales", [])
+        edits = context.get("suggested_edits", [])
+
+        severity_counts: Dict[str, int] = {}
+        for finding in findings:
+            severity = str(finding.get("severity", "unknown")).lower()
+            severity_counts[severity] = severity_counts.get(severity, 0) + 1
+
+        conflict_count = sum(
+            1 for edit in edits if edit.get("conflicts_with")
+        )
+
+        return {
+            "total_findings": len(findings),
+            "total_rationales": len(rationales),
+            "total_edits": len(edits),
+            "by_severity": severity_counts,
+            "critical_count": severity_counts.get("critical", 0),
+            "high_count": severity_counts.get("high", 0),
+            "edits_with_conflicts": conflict_count,
+            "style_params": context.get("style_params", {}),
+            "has_errors": len(context.get("errors", [])) > 0,
+        }
 
     def _build_default_agents(self) -> List[AgentAdapter]:
         """Create adapters for the existing four agents when available."""
