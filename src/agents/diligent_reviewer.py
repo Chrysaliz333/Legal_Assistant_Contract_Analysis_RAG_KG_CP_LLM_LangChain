@@ -115,8 +115,10 @@ class DiligentReviewerAgent:
 
                 for result in results:
                     if isinstance(result, Exception):
-                        # Log error but continue processing
-                        print(f"Warning: Policy check failed: {result}")
+                        # Log error and add to state
+                        error_msg = f"Policy check failed: {str(result)}"
+                        print(f"Warning: {error_msg}")
+                        state['errors'].append(error_msg)
                         errors_count += 1
                     elif result:
                         state['findings'].append(result)
