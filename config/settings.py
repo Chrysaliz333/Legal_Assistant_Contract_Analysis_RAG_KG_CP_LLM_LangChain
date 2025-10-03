@@ -20,9 +20,9 @@ class Settings(BaseSettings):
     ENVIRONMENT: str = "development"  # development, staging, production
 
     # ============================================================================
-    # DATABASE - PostgreSQL
+    # DATABASE - PostgreSQL (Optional for Streamlit deployment)
     # ============================================================================
-    DATABASE_URL: str
+    DATABASE_URL: str = "sqlite:///legal_assistant.db"  # Default to SQLite
     DATABASE_POOL_SIZE: int = 20
     DATABASE_MAX_OVERFLOW: int = 10
     DATABASE_POOL_RECYCLE: int = 3600  # Recycle connections after 1 hour
@@ -61,9 +61,9 @@ class Settings(BaseSettings):
     EMBEDDING_DIMENSION: int = 384  # Dimension for MiniLM
 
     # ============================================================================
-    # SECURITY
+    # SECURITY (Optional for Streamlit deployment)
     # ============================================================================
-    SECRET_KEY: str  # Generate with: openssl rand -hex 32
+    SECRET_KEY: str = "demo-secret-key-change-in-production"  # Default for demo
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
