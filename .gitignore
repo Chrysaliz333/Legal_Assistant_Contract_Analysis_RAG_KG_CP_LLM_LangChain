@@ -1,6 +1,4 @@
 # Environment variables and secrets
-.env
-*.key
 *.pem
 .claude/settings.local.json
 *.local.json
