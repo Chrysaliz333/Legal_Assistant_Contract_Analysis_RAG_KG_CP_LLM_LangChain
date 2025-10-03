@@ -13,7 +13,7 @@ from datetime import datetime
 import json
 import re
 
-from langchain_anthropic import ChatAnthropic
+from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from textblob import TextBlob
 
@@ -42,12 +42,12 @@ class NeutralRationaleAgent:
 
     def __init__(self):
         # Use Sonnet 3.5 for balanced speed/quality in rationale generation
-        self.llm = ChatAnthropic(
-            model="claude-3-5-sonnet-20241022",  # Balanced model for objective analysis
+        self.llm = ChatOpenAI(
+            model="gpt-4o",  # Balanced model for objective analysis
             max_tokens=1024,  # Rationale + proposed change
             temperature=0.2,  # Low temperature for neutral, objective output
-            timeout=settings.CLAUDE_TIMEOUT,
-            anthropic_api_key=settings.ANTHROPIC_API_KEY
+            timeout=30,
+            openai_api_key=settings.OPENAI_API_KEY
         )
 
     async def process(self, state: AnalysisContext) -> AnalysisContext:

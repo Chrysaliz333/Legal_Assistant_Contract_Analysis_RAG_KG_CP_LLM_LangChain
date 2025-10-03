@@ -15,7 +15,7 @@ from uuid import uuid4
 from datetime import datetime
 import json
 
-from langchain_anthropic import ChatAnthropic
+from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 
 from config.settings import settings
@@ -38,12 +38,12 @@ class PersonalityAgent:
     """
 
     def __init__(self):
-        self.llm = ChatAnthropic(
+        self.llm = ChatOpenAI(
             model=settings.CLAUDE_MODEL,
             max_tokens=settings.CLAUDE_MAX_TOKENS,
             temperature=settings.CLAUDE_TEMPERATURE,
-            timeout=settings.CLAUDE_TIMEOUT,
-            anthropic_api_key=settings.ANTHROPIC_API_KEY
+            timeout=30,
+            openai_api_key=settings.OPENAI_API_KEY
         )
 
     async def process(self, state: AnalysisContext) -> AnalysisContext:
