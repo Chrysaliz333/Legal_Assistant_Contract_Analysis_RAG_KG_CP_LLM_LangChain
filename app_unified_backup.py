@@ -394,14 +394,6 @@ def main():
     # File upload
     st.header("📤 Upload Contract")
 
-    # Create or get negotiation
-    if not st.session_state.current_negotiation_id:
-        # Auto-create first negotiation
-        import uuid
-        new_id = f"neg_{uuid.uuid4().hex[:8]}"
-        tracker.create_negotiation(new_id, uploaded_file.name if 'uploaded_file' in locals() else "New Negotiation")
-        st.session_state.current_negotiation_id = new_id
-
     uploaded_file = st.file_uploader(
         "Drop your contract here (.txt, .pdf, .docx)",
         type=['txt', 'pdf', 'docx', 'doc']
@@ -423,22 +415,6 @@ def main():
         with st.expander("📄 Contract Preview", expanded=False):
             st.text(contract_text[:2000] + ("..." if len(contract_text) > 2000 else ""))
 
-        # Version metadata
-        col1, col2 = st.columns(2)
-
-        with col1:
-            uploaded_by = st.radio(
-                "This version is from:",
-                ['internal', 'counterparty'],
-                horizontal=True
-            )
-
-        with col2:
-            version_notes = st.text_input(
-                "Notes (optional)",
-                placeholder="e.g., Counterparty increased liability cap"
-            )
-
         # Analyze button
         if st.button("🚀 Analyze Contract", type="primary"):
             # Run analysis
@@ -447,19 +423,6 @@ def main():
             if error:
                 st.error(error)
                 return
-
-            # Save version to negotiation tracker
-            try:
-                version = tracker.add_version(
-                    st.session_state.current_negotiation_id,
-                    contract_text,
-                    uploaded_by=uploaded_by,
-                    notes=version_notes if version_notes else None,
-                    analysis_result=result
-                )
-                st.success(f"✅ Saved as {version.version_id}")
-            except ValueError as e:
-                st.warning(f"⚠️ {str(e)}")
 
             # Display results
             st.header("📊 Analysis Results")
@@ -528,79 +491,6 @@ Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
                     file_name=f"contract_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md",
                     mime="text/markdown"
                 )
-
-            # Show negotiation timeline
-            st.markdown("---")
-            st.header("📋 Negotiation Timeline")
-
-            timeline = tracker.get_negotiation_timeline(st.session_state.current_negotiation_id)
-
-            if len(timeline) > 1:
-                st.info(f"📊 {len(timeline)} versions in this negotiation")
-
-            for entry in timeline:
-                with st.expander(
-                    f"**Version {entry['version_number']}** - {entry['uploaded_by'].title()} ({entry['uploaded_at'][:10]})",
-                    expanded=(entry['version_number'] == len(timeline))
-                ):
-                    st.markdown(f"**Uploaded:** {entry['uploaded_at']}")
-                    st.markdown(f"**Source:** {entry['uploaded_by'].title()}")
-
-                    if entry.get('notes'):
-                        st.markdown(f"**Notes:** {entry['notes']}")
-
-                    if entry.get('analysis_summary'):
-                        summary = entry['analysis_summary']
-                        col1, col2, col3, col4 = st.columns(4)
-
-                        with col1:
-                            st.metric("Findings", summary['total_findings'])
-                        with col2:
-                            st.metric("Critical", summary['critical'])
-                        with col3:
-                            st.metric("High", summary['high'])
-                        with col4:
-                            st.metric("Edits", summary['suggested_edits'])
-
-            # Version comparison
-            if len(timeline) > 1:
-                st.markdown("---")
-                st.header("🔀 Compare Versions")
-
-                col1, col2 = st.columns(2)
-
-                with col1:
-                    v1_num = st.selectbox(
-                        "Base Version",
-                        [i + 1 for i in range(len(timeline))],
-                        index=len(timeline) - 2
-                    )
-
-                with col2:
-                    v2_num = st.selectbox(
-                        "Compare To",
-                        [i + 1 for i in range(len(timeline))],
-                        index=len(timeline) - 1
-                    )
-
-                if st.button("Compare Selected Versions"):
-                    v1_id = timeline[v1_num - 1]['version_id']
-                    v2_id = timeline[v2_num - 1]['version_id']
-
-                    comparison = tracker.compare_versions(v1_id, v2_id)
-
-                    st.markdown(f"### Changes: Version {v1_num} → Version {v2_num}")
-
-                    col_a, col_b, col_c = st.columns(3)
-                    with col_a:
-                        st.metric("Additions", comparison['summary']['additions'])
-                    with col_b:
-                        st.metric("Deletions", comparison['summary']['deletions'])
-                    with col_c:
-                        st.metric("Total Changes", comparison['summary']['total_changes'])
-
-                    st.markdown("### Unified Diff")
-                    st.code(comparison['diff_unified'], language='diff')
 
 
 if __name__ == "__main__":

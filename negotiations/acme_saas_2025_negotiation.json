@@ -1,0 +1,24 @@
+{
+  "negotiation_id": "acme_saas_2025",
+  "title": "Acme Corp SaaS Agreement",
+  "created_at": "2025-10-03T16:01:28.372091",
+  "versions": [
+    {
+      "version_id": "acme_saas_2025_v1",
+      "version_number": 1,
+      "uploaded_at": "2025-10-03T16:01:28.372370",
+      "uploaded_by": "internal",
+      "file_hash": "6eafc0df2073384b",
+      "notes": "Initial draft from legal team"
+    },
+    {
+      "version_id": "acme_saas_2025_v2",
+      "version_number": 2,
+      "uploaded_at": "2025-10-03T16:01:28.372614",
+      "uploaded_by": "counterparty",
+      "file_hash": "43be2844811ae670",
+      "notes": "Counterparty increased liability cap and added arbitration clause"
+    }
+  ],
+  "status": "active"
+}

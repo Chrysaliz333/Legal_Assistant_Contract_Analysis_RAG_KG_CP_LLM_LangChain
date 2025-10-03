@@ -1,0 +1,60 @@
+MASTER SERVICES AGREEMENT
+
+This Master Services Agreement ("Agreement") is entered into as of March 15, 2024 ("Effective Date") between TechCorp Solutions, Inc. ("Client") and DataVendor Systems LLC ("Contractor").
+
+1. LIMITATION OF LIABILITY
+
+Contractor's total liability under this Agreement shall not exceed 1.5× the amount of fees paid by Client in the twelve (12) months preceding the claim. This limitation applies to all claims, regardless of the form of action.
+
+2. INTELLECTUAL PROPERTY OWNERSHIP
+
+All work product, deliverables, inventions, discoveries, and improvements created by Contractor in the course of providing Services shall be jointly owned by Contractor and Client. Client is granted a perpetual, irrevocable license to use such work product for Client's business purposes.
+
+3. TERMINATION
+
+Either party may terminate this Agreement for any reason or no reason upon sixty (60) days prior written notice to the other party. Upon termination, Client shall pay all outstanding fees and expenses within thirty (30) days of the termination date.
+
+4. CONFIDENTIALITY
+
+Each party agrees to maintain the confidentiality of the other party's Confidential Information disclosed during the term of this Agreement. The receiving party shall use the same degree of care to protect the disclosing party's Confidential Information as it uses to protect its own confidential information, but in no event less than reasonable care. This obligation shall survive for a period of five (5) years following the disclosure of the Confidential Information.
+
+5. DATA PROTECTION AND PRIVACY
+
+Contractor shall process Client data in accordance with applicable data protection laws. Contractor shall provide prior written notice to Client before transferring Client data to third-party service providers located outside the European Economic Area. Data retention period shall be mutually agreed upon by both parties in writing.
+
+6. PAYMENT TERMS
+
+Client shall pay all invoices within thirty (30) days of receipt. Late payments shall accrue interest at a rate of 1.5% per month. Fees may be refunded on a pro-rated basis if Services are terminated early.
+
+7. WARRANTY DISCLAIMER
+
+CONTRACTOR PROVIDES ALL SERVICES "AS IS" WITHOUT ANY WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. CONTRACTOR DOES NOT WARRANT THAT SERVICES WILL BE UNINTERRUPTED OR ERROR-FREE.
+
+8. GOVERNING LAW AND DISPUTE RESOLUTION
+
+This Agreement shall be governed by the laws of Delaware, United States. Any disputes arising under this Agreement shall be resolved through good faith negotiation for thirty (30) days, followed by mediation if needed. Arbitration shall be a last resort and conducted in English in New York, NY, with each party bearing its own costs and expenses.
+
+9. INDEMNIFICATION
+
+Client shall indemnify, defend, and hold harmless Contractor from any and all claims, damages, losses, and expenses (including reasonable attorneys' fees) arising from Client's misuse of the Services or breach of this Agreement. Contractor shall indemnify Client for claims arising from Contractor's negligence or breach.
+
+10. ASSIGNMENT
+
+Neither party may assign this Agreement without the other party's prior written consent, which shall not be unreasonably withheld.
+
+11. AUTOMATIC RENEWAL
+
+This Agreement shall automatically renew for successive one-year terms unless either party provides written notice of non-renewal at least ninety (90) days prior to the end of the then-current term. Any fee increases upon renewal shall be mutually agreed upon in writing and shall not exceed 10% annually.
+
+12. SERVICE LEVEL AGREEMENT
+
+Contractor commits to 99.5% uptime for Services, measured on a monthly basis. In the event of failure to meet this commitment, Client shall receive a service credit equal to 5% of the monthly fee for the affected month, with escalating credits for continued failures.
+
+IN WITNESS WHEREOF, the parties have executed this Agreement as of the Effective Date.
+
+TechCorp Solutions, Inc.                    DataVendor Systems LLC
+
+By: _________________________              By: _________________________
+    Sarah Johnson                             Michael Chen
+    Chief Procurement Officer                 Chief Revenue Officer
+    Date: March 15, 2024                      Date: March 15, 2024

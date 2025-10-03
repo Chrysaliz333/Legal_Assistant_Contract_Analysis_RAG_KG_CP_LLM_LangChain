@@ -1,0 +1,11 @@
+{
+  "version_id": "acme_saas_2025_v2",
+  "negotiation_id": "acme_saas_2025",
+  "version_number": 2,
+  "contract_text": "\nMASTER SERVICES AGREEMENT\n\n1. LIABILITY CAP\nContractor's liability shall not exceed 1.5\u00d7 annual fees.\n\n2. TERMINATION\nEither party may terminate with 60 days notice.\n\n3. ARBITRATION\nAll disputes shall be resolved through binding arbitration.\n",
+  "uploaded_at": "2025-10-03T16:01:28.372614",
+  "uploaded_by": "counterparty",
+  "file_hash": "43be2844811ae670",
+  "analysis_result": null,
+  "notes": "Counterparty increased liability cap and added arbitration clause"
+}
