@@ -14,7 +14,7 @@ import json
 import asyncio
 import time
 
-from langchain_anthropic import ChatAnthropic
+from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 
 from config.settings import settings
@@ -34,13 +34,13 @@ class DiligentReviewerAgent:
     """
 
     def __init__(self):
-        # Use Haiku for fast, cheap policy checking (75% faster than Sonnet)
-        self.llm = ChatAnthropic(
-            model="claude-3-5-haiku-20241022",  # Fast model for simple compliance checks
+        # Use GPT-4o-mini for fast, cheap policy checking
+        self.llm = ChatOpenAI(
+            model="gpt-4o-mini",  # Fast model for simple compliance checks
             max_tokens=512,  # Simple JSON responses
             temperature=0.1,  # Low temperature for consistent policy checking
-            timeout=settings.CLAUDE_TIMEOUT,
-            anthropic_api_key=settings.ANTHROPIC_API_KEY
+            timeout=30,
+            openai_api_key=settings.OPENAI_API_KEY
         )
 
     async def process(self, state: AnalysisContext) -> AnalysisContext:
@@ -290,14 +290,16 @@ Analyze compliance and return JSON:""")
             return finding
 
         except json.JSONDecodeError as e:
-            # LLM didn't return valid JSON
-            print(f"Warning: Invalid JSON from LLM: {response.content[:100]}")
-            return None
+            # LLM didn't return valid JSON - raise so it gets caught and logged
+            error_msg = f"Invalid JSON from LLM: {response.content[:200]}"
+            print(f"Warning: {error_msg}")
+            raise Exception(error_msg)
 
         except Exception as e:
-            # Other error
-            print(f"Error checking compliance: {e}")
-            return None
+            # Other error - raise so it gets caught and logged
+            error_msg = f"Error checking compliance: {str(e)}"
+            print(error_msg)
+            raise
 
     def _create_structured_finding(
         self,

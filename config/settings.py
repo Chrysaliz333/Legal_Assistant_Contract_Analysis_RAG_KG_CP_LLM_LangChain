@@ -37,9 +37,11 @@ class Settings(BaseSettings):
     REDIS_TTL_SESSION: int = 86400  # 24 hours for session data
 
     # ============================================================================
-    # ANTHROPIC CLAUDE API
+    # AI API KEYS
     # ============================================================================
-    ANTHROPIC_API_KEY: str
+    ANTHROPIC_API_KEY: str = ""  # Optional - for Claude models
+    OPENAI_API_KEY: str  # Required - for OpenAI models
+
     CLAUDE_MODEL: str = "claude-sonnet-4-5-20250929"
     CLAUDE_MAX_TOKENS: int = 4096
     CLAUDE_TEMPERATURE: float = 0.3  # Low temperature for consistent legal analysis
