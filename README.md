@@ -1,6 +1,6 @@
 # Legal Assistant Multi-Session Continuity System
 
-**Enterprise-grade contract analysis platform with stateful negotiation tracking, multi-agent intelligence, and personality-aware communication.**
+Contract analysis platform with stateful negotiation tracking, multi-agent intelligence, and personality-aware communication.**
 
 [![Python 3.10.11+](https://img.shields.io/badge/python-3.10.11+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115.0-green.svg)](https://fastapi.tiangolo.com/)
@@ -427,4 +427,5 @@ For getting started, see [docs/QUICKSTART.md](docs/QUICKSTART.md)
 For implementation details, see [docs/IMPLEMENTATION_GUIDE.md](docs/IMPLEMENTATION_GUIDE.md)
 
 For current status, see [PROJECT_STATUS.md](PROJECT_STATUS.md)
+
 
