@@ -75,38 +75,25 @@ class PersonalityAgent:
             findings = state.get('findings', [])
             findings_by_id = {f['finding_id']: f for f in findings}
 
-            # Transform each rationale
-            for rationale in neutral_rationales:
-                # Get associated finding for context
+            # Process rationales in parallel
+            import asyncio
+
+            async def process_one(rationale):
                 finding = findings_by_id.get(rationale['finding_id'])
-
-                # Check cache first (REQ-PA-001)
-                cached = await cache_service.get_transformation(
-                    rationale['rationale_id'],
-                    style_params
-                )
-
+                cached = await cache_service.get_transformation(rationale['rationale_id'], style_params)
                 if cached:
-                    # Use cached transformation
-                    state['transformed_rationales'].append(cached)
-                else:
-                    # Generate new transformation
-                    transformation = await self.transform_rationale(
-                        rationale,
-                        style_params,
-                        finding
-                    )
+                    return cached
+                transformation = await self.transform_rationale(rationale, style_params, finding)
+                if transformation:
+                    await cache_service.set_transformation(rationale['rationale_id'], style_params, transformation)
+                return transformation
 
-                    if transformation:
-                        # Cache it
-                        await cache_service.set_transformation(
-                            rationale['rationale_id'],
-                            style_params,
-                            transformation
-                        )
+            tasks = [process_one(r) for r in neutral_rationales]
+            results = await asyncio.gather(*tasks, return_exceptions=True)
 
-                        # Add to context
-                        state['transformed_rationales'].append(transformation)
+            for result in results:
+                if result and not isinstance(result, Exception):
+                    state['transformed_rationales'].append(result)
 
             # Update workflow stage
             state['workflow_stage'] = 'editing'

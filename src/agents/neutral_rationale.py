@@ -72,12 +72,13 @@ class NeutralRationaleAgent:
                 state['workflow_stage'] = 'styling'
                 return state
 
-            # Generate rationale for each finding
-            for finding in findings:
-                rationale = await self.generate_rationale(finding)
+            # Generate rationales in parallel for speed
+            tasks = [self.generate_rationale(finding) for finding in findings]
+            rationales = await asyncio.gather(*tasks, return_exceptions=True)
 
-                if rationale:
-                    # Add to context
+            # Add successful rationales to context
+            for rationale in rationales:
+                if rationale and not isinstance(rationale, Exception):
                     state['neutral_rationales'].append(rationale)
 
             # Update workflow stage
