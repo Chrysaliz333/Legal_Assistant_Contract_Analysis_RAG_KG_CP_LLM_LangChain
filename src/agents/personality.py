@@ -14,6 +14,7 @@ from typing import Dict, Optional
 from uuid import uuid4
 from datetime import datetime
 import json
+import asyncio
 
 from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
@@ -76,8 +77,6 @@ class PersonalityAgent:
             findings_by_id = {f['finding_id']: f for f in findings}
 
             # Process rationales in parallel
-            import asyncio
-
             async def process_one(rationale):
                 finding = findings_by_id.get(rationale['finding_id'])
                 cached = await cache_service.get_transformation(rationale['rationale_id'], style_params)

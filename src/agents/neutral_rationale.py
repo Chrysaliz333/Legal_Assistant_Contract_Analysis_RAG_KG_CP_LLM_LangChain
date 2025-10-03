@@ -12,6 +12,7 @@ from uuid import uuid4
 from datetime import datetime
 import json
 import re
+import asyncio
 
 from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
