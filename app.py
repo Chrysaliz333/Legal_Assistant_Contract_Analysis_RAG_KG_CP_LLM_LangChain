@@ -336,6 +336,15 @@ def main():
         orchestrator = st.session_state["orchestrator"]
         project_id = st.session_state["project_id"]
         session_id = st.session_state["session_id"]
+        saved_prefs = orchestrator.memory.get_preferences(project_id, session_id)
+
+        def pref_value(key: str, fallback: str) -> str:
+            entry = saved_prefs.get(key)
+            if entry:
+                val = entry.get('value')
+                if isinstance(val, str) and val:
+                    return val
+            return fallback
 
         contract_type = st.selectbox(
             "Contract Type",
@@ -352,10 +361,27 @@ def main():
 
         st.markdown("### Style Parameters")
 
-        tone = st.selectbox("Tone", ['concise', 'balanced', 'verbose'], index=0)
-        formality = st.selectbox("Formality", ['legal', 'plain_english'], index=0)
-        aggressiveness = st.selectbox("Aggressiveness", ['strict', 'balanced', 'flexible'], index=0)
-        audience = st.selectbox("Audience", ['internal', 'counterparty'], index=0)
+        tone_options = ['concise', 'balanced', 'verbose']
+        tone_pref = pref_value('style.tone', tone_options[0])
+        tone_index = tone_options.index(tone_pref) if tone_pref in tone_options else 0
+        tone = st.selectbox("Tone", tone_options, index=tone_index)
+
+        formality_options = ['legal', 'plain_english']
+        formality_pref = pref_value('style.formality', formality_options[0])
+        formality_index = formality_options.index(formality_pref) if formality_pref in formality_options else 0
+        formality = st.selectbox("Formality", formality_options, index=formality_index)
+
+        aggressiveness_options = ['strict', 'balanced', 'flexible']
+        aggressiveness_pref = pref_value('style.aggressiveness', aggressiveness_options[1])
+        if aggressiveness_pref not in aggressiveness_options:
+            aggressiveness_pref = aggressiveness_options[1]
+        aggressiveness_index = aggressiveness_options.index(aggressiveness_pref)
+        aggressiveness = st.selectbox("Aggressiveness", aggressiveness_options, index=aggressiveness_index)
+
+        audience_options = ['internal', 'counterparty']
+        audience_pref = pref_value('style.audience', audience_options[0])
+        audience_index = audience_options.index(audience_pref) if audience_pref in audience_options else 0
+        audience = st.selectbox("Audience", audience_options, index=audience_index)
 
         style_params = {
             'tone': tone,
@@ -365,12 +391,19 @@ def main():
         }
 
         st.markdown("### 🧭 Saved Preferences")
-        saved_prefs = orchestrator.memory.get_preferences(project_id, session_id)
         if saved_prefs:
             for key, payload in sorted(saved_prefs.items()):
                 value = payload.get('value')
                 updated = payload.get('updated_at', '')
-                st.caption(f"`{key}` → {value} (updated {updated})")
+                try:
+                    updated_display = (
+                        datetime.fromisoformat(updated).strftime('%Y-%m-%d %H:%M UTC')
+                        if updated
+                        else 'unknown'
+                    )
+                except ValueError:
+                    updated_display = updated or 'unknown'
+                st.caption(f"`{key}` → {value} (updated {updated_display})")
         else:
             st.caption("No saved preferences yet. Add one below.")
 
@@ -445,9 +478,9 @@ def main():
                         contract_type,
                         orientation,
                         style_params,
-                        st.session_state["project_id"],
-                        st.session_state["session_id"],
-                        st.session_state["orchestrator"],
+                        project_id,
+                        session_id,
+                        orchestrator,
                     )
                 )
 
@@ -471,7 +504,7 @@ def main():
 
     else:
         # Show existing timeline (if any) even without active upload
-        display_negotiation_history(st.session_state["orchestrator"], st.session_state["project_id"])
+        display_negotiation_history(orchestrator, project_id)
 
         # Show instructions
         st.markdown("### 👋 Get Started")
