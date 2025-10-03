@@ -10,6 +10,10 @@ from datetime import datetime
 import tempfile
 import os
 import json
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Set API key from Streamlit secrets or environment
 if "OPENAI_API_KEY" in st.secrets:
