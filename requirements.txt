@@ -29,3 +29,6 @@ sentence-transformers==3.1.1
 # Utilities
 python-dotenv==1.0.1
 requests==2.32.3
+
+# Optional dependencies (gracefully degrade if not available)
+redis==5.0.8
