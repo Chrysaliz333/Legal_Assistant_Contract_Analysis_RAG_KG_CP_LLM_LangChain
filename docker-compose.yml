@@ -1,0 +1,168 @@
+version: '3.8'
+
+services:
+  # ============================================================================
+  # PostgreSQL Database
+  # ============================================================================
+  db:
+    image: postgres:14-alpine
+    container_name: legal_assistant_db
+    environment:
+      POSTGRES_USER: legal_user
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-legal_password}
+      POSTGRES_DB: legal_assistant
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docs/database_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U legal_user -d legal_assistant"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - legal_assistant_network
+
+  # ============================================================================
+  # Redis Cache
+  # ============================================================================
+  redis:
+    image: redis:7-alpine
+    container_name: legal_assistant_redis
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - legal_assistant_network
+
+  # ============================================================================
+  # FastAPI Application
+  # ============================================================================
+  app:
+    build:
+      context: .
+      target: development
+    container_name: legal_assistant_app
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://legal_user:${DATABASE_PASSWORD:-legal_password}@db:5432/legal_assistant
+      - REDIS_URL=redis://redis:6379/0
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - TAVILY_API_KEY=${TAVILY_API_KEY}
+      - SECRET_KEY=${SECRET_KEY:-change_this_secret_key_in_production}
+      - DEBUG=True
+      - ENVIRONMENT=development
+    volumes:
+      - .:/app
+      - storage_data:/app/storage
+      - logs_data:/app/logs
+      - chroma_data:/app/chroma_db
+    ports:
+      - "8000:8000"
+    networks:
+      - legal_assistant_network
+    restart: unless-stopped
+
+  # ============================================================================
+  # Celery Worker (Background Tasks)
+  # ============================================================================
+  celery_worker:
+    build:
+      context: .
+      target: development
+    container_name: legal_assistant_worker
+    command: celery -A src.tasks.celery_app worker --loglevel=info --concurrency=4
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://legal_user:${DATABASE_PASSWORD:-legal_password}@db:5432/legal_assistant
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/2
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - TAVILY_API_KEY=${TAVILY_API_KEY}
+    volumes:
+      - .:/app
+      - storage_data:/app/storage
+      - chroma_data:/app/chroma_db
+    networks:
+      - legal_assistant_network
+    restart: unless-stopped
+
+  # ============================================================================
+  # Celery Beat (Scheduled Tasks)
+  # ============================================================================
+  celery_beat:
+    build:
+      context: .
+      target: development
+    container_name: legal_assistant_beat
+    command: celery -A src.tasks.celery_app beat --loglevel=info
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/2
+    volumes:
+      - .:/app
+    networks:
+      - legal_assistant_network
+    restart: unless-stopped
+
+  # ============================================================================
+  # Flower (Celery Monitoring) - Optional
+  # ============================================================================
+  flower:
+    build:
+      context: .
+      target: development
+    container_name: legal_assistant_flower
+    command: celery -A src.tasks.celery_app flower --port=5555
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/2
+    ports:
+      - "5555:5555"
+    networks:
+      - legal_assistant_network
+    restart: unless-stopped
+
+# ============================================================================
+# Networks
+# ============================================================================
+networks:
+  legal_assistant_network:
+    driver: bridge
+
+# ============================================================================
+# Volumes
+# ============================================================================
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  storage_data:
+    driver: local
+  logs_data:
+    driver: local
+  chroma_data:
+    driver: local

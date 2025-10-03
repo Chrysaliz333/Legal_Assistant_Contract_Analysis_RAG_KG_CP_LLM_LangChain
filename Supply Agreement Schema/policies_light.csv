@@ -1,0 +1,4 @@
+policy_text,policy_category,severity_default
+All vendor contracts must include a liability cap of at least 200% of total fees.,limitation_of_liability,high
+All agreements must contain a governing law clause aligned to England and Wales.,governing_law,medium
+All vendor contracts processing personal data must include a Data Processing Addendum (DPA).,data_protection,critical

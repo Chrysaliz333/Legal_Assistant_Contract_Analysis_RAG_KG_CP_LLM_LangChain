@@ -1,0 +1,7 @@
+rule_text,applicable_contract_types,applicable_clauses,severity_override,conditions,model_orientation
+"For SaaS, require uptime SLA of at least 99.9% with service credits.",saas;cloud_services,service_levels;uptime_sla,high,"{""party"": ""customer"", ""uptime_sla_min"": 99.9}",buy
+Indemnity must cover third-party IP infringement including duty to defend.,saas;software_licence,indemnity;ip_infringement,high,"{""party"": ""customer""}",buy
+"Assignment permitted for corporate reorganisation, M&A or affiliate transfers with prior notice.",msa;saas;professional_services,assignment_and_subcontracting,medium,"{""party"": ""customer""}",sell
+Payment due within 30 days of invoice; late fees apply thereafter.,msa;professional_services;saas,payment_terms,medium,"{""party"": ""supplier""}",sell
+"Exclude liability for indirect, special, or consequential damages.",msa;saas;software_licence,indirect_consequential_damages,high,"{""party"": ""supplier""}",sell
+Confidentiality carve-outs must include disclosures required by law and information independently developed.,msa;nda;saas,confidentiality,medium,"{""party"": ""supplier""}",sell

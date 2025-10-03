@@ -2,6 +2,8 @@
 .env
 *.key
 *.pem
+.claude/settings.local.json
+*.local.json
 
 # Python
 __pycache__/
@@ -157,7 +159,55 @@ analysis_results/
 reports/
 exports/
 
-# Large files
+# Large files (exclude sample/test documents)
 *.pdf
 *.docx
 *.xlsx
+
+# ============================================================================
+# Multi-Session Continuity System Specific
+# ============================================================================
+
+# Storage directory (uploaded contracts)
+storage/
+!storage/.gitkeep
+
+# Vector database (ChromaDB)
+chroma_db/
+!chroma_db/.gitkeep
+
+# Logs
+logs/
+!logs/.gitkeep
+
+# Database migrations (keep alembic directory structure)
+alembic/versions/*.pyc
+alembic.ini
+
+# Docker volumes
+postgres_data/
+redis_data/
+storage_data/
+logs_data/
+chroma_data/
+
+# Celery
+celerybeat-schedule.db
+
+# Test fixtures (large files)
+tests/fixtures/*.pdf
+tests/fixtures/*.docx
+!tests/fixtures/sample_*.docx
+!tests/fixtures/sample_*.pdf
+
+# OpenTelemetry
+.otel/
+
+# Coverage reports
+htmlcov/
+.coverage
+
+# Temporary analysis files
+*.analysis.json
+*.findings.json
+*.diff.html
