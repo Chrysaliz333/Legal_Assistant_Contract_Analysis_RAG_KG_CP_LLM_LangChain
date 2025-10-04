@@ -606,6 +606,82 @@ Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
                     st.markdown("### Unified Diff")
                     st.code(comparison['diff_unified'], language='diff')
 
+    # Show timeline and comparison for existing negotiations (outside analyze button)
+    if st.session_state.current_negotiation_id:
+        timeline = tracker.get_negotiation_timeline(st.session_state.current_negotiation_id)
+
+        if len(timeline) > 0:
+            st.markdown("---")
+            st.header("📋 Negotiation History")
+            st.info(f"📊 {len(timeline)} version(s) in this negotiation")
+
+            # Timeline
+            for entry in timeline:
+                with st.expander(
+                    f"**Version {entry['version_number']}** - {entry['uploaded_by'].title()} ({entry['uploaded_at'][:10]})",
+                    expanded=False
+                ):
+                    st.markdown(f"**Uploaded:** {entry['uploaded_at']}")
+                    st.markdown(f"**Source:** {entry['uploaded_by'].title()}")
+
+                    if entry.get('notes'):
+                        st.markdown(f"**Notes:** {entry['notes']}")
+
+                    if entry.get('analysis_summary'):
+                        summary = entry['analysis_summary']
+                        col1, col2, col3, col4 = st.columns(4)
+
+                        with col1:
+                            st.metric("Findings", summary['total_findings'])
+                        with col2:
+                            st.metric("Critical", summary['critical'])
+                        with col3:
+                            st.metric("High", summary['high'])
+                        with col4:
+                            st.metric("Edits", summary['suggested_edits'])
+
+            # Comparison (only if 2+ versions)
+            if len(timeline) > 1:
+                st.markdown("---")
+                st.header("🔀 Compare Versions")
+
+                col1, col2 = st.columns(2)
+
+                with col1:
+                    v1_num = st.selectbox(
+                        "Base Version",
+                        [i + 1 for i in range(len(timeline))],
+                        index=max(0, len(timeline) - 2),
+                        key="compare_v1"
+                    )
+
+                with col2:
+                    v2_num = st.selectbox(
+                        "Compare To",
+                        [i + 1 for i in range(len(timeline))],
+                        index=len(timeline) - 1,
+                        key="compare_v2"
+                    )
+
+                if st.button("🔍 Compare Selected Versions"):
+                    v1_id = timeline[v1_num - 1]['version_id']
+                    v2_id = timeline[v2_num - 1]['version_id']
+
+                    comparison = tracker.compare_versions(v1_id, v2_id)
+
+                    st.markdown(f"### Changes: Version {v1_num} → Version {v2_num}")
+
+                    col_a, col_b, col_c = st.columns(3)
+                    with col_a:
+                        st.metric("Additions", comparison['summary']['additions'])
+                    with col_b:
+                        st.metric("Deletions", comparison['summary']['deletions'])
+                    with col_c:
+                        st.metric("Total Changes", comparison['summary']['total_changes'])
+
+                    st.markdown("### Unified Diff")
+                    st.code(comparison['diff_unified'], language='diff')
+
 
 if __name__ == "__main__":
     main()

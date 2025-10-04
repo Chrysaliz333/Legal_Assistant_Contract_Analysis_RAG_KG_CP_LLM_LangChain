@@ -1,0 +1,202 @@
+{
+  "version_id": "acme_saas_2025_v3",
+  "negotiation_id": "acme_saas_2025",
+  "version_number": 3,
+  "contract_text": "MASTER SERVICES AGREEMENT\n\nThis Master Services Agreement (\"Agreement\") is entered into as of March 15, 2024 (\"Effective Date\") between TechCorp Solutions, Inc. (\"Client\") and DataVendor Systems LLC (\"Contractor\").\n\n1. LIMITATION OF LIABILITY\n\nContractor's total liability under this Agreement shall not exceed the amount of fees paid by Client in the twelve (12) months preceding the claim. This limitation applies to all claims, regardless of the form of action.\n\n2. INTELLECTUAL PROPERTY OWNERSHIP\n\nAll work product, deliverables, inventions, discoveries, and improvements created by Contractor in the course of providing Services shall remain the property of Contractor. Client is granted a non-exclusive, revocable license to use such work product solely for Client's internal business purposes. This license may be terminated by Contractor upon thirty (30) days written notice.\n\n3. TERMINATION\n\nEither party may terminate this Agreement for any reason or no reason upon thirty (30) days prior written notice to the other party. Upon termination, Client shall pay all outstanding fees and expenses within ninety (90) days of the termination date.\n\n4. CONFIDENTIALITY\n\nEach party agrees to maintain the confidentiality of the other party's Confidential Information disclosed during the term of this Agreement. The receiving party shall use the same degree of care to protect the disclosing party's Confidential Information as it uses to protect its own confidential information, but in no event less than reasonable care. This obligation shall survive for a period of two (2) years following the disclosure of the Confidential Information.\n\n5. DATA PROTECTION AND PRIVACY\n\nContractor shall process Client data in accordance with applicable data protection laws. Contractor may transfer Client data to third-party service providers located outside the European Economic Area without prior notice to Client. Data retention period shall be determined solely by Contractor based on its operational needs.\n\n6. PAYMENT TERMS\n\nClient shall pay all invoices within sixty (60) days of receipt. Late payments shall accrue interest at a rate of 2% per month. All fees are non-refundable once Services have commenced.\n\n7. WARRANTY DISCLAIMER\n\nCONTRACTOR PROVIDES ALL SERVICES \"AS IS\" WITHOUT ANY WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. CONTRACTOR DOES NOT WARRANT THAT SERVICES WILL BE UNINTERRUPTED OR ERROR-FREE.\n\n8. GOVERNING LAW AND DISPUTE RESOLUTION\n\nThis Agreement shall be governed by the laws of the Cayman Islands. Any disputes arising under this Agreement shall be resolved exclusively through arbitration in George Town, Cayman Islands, with each party bearing its own costs and expenses. The arbitration shall be conducted in Russian.\n\n9. INDEMNIFICATION\n\nClient shall indemnify, defend, and hold harmless Contractor from any and all claims, damages, losses, and expenses (including reasonable attorneys' fees) arising from Client's use of the Services, regardless of whether such claims result from Contractor's negligence or breach of this Agreement.\n\n10. ASSIGNMENT\n\nContractor may freely assign this Agreement or any of its rights or obligations hereunder to any third party without Client's consent. Client may not assign this Agreement without Contractor's prior written consent, which may be withheld in Contractor's sole discretion.\n\n11. AUTOMATIC RENEWAL\n\nThis Agreement shall automatically renew for successive one-year terms unless either party provides written notice of non-renewal at least one hundred eighty (180) days prior to the end of the then-current term. Contractor reserves the right to increase fees upon renewal by up to 25% without additional notice.\n\n12. SERVICE LEVEL AGREEMENT\n\nContractor commits to 95% uptime for Services, measured on an annual basis. In the event of failure to meet this commitment, Client's sole remedy shall be a service credit equal to 2% of the monthly fee for the affected month. No other remedies or damages shall be available.\n\nIN WITNESS WHEREOF, the parties have executed this Agreement as of the Effective Date.\n\nTechCorp Solutions, Inc.                    DataVendor Systems LLC\n\nBy: _________________________              By: _________________________\n    Sarah Johnson                             Michael Chen\n    Chief Procurement Officer                 Chief Revenue Officer\n    Date: March 15, 2024                      Date: March 15, 2024\n",
+  "uploaded_at": "2025-10-03T20:47:05.945812",
+  "uploaded_by": "counterparty",
+  "file_hash": "90c33a222ec3ab45",
+  "analysis_result": {
+    "findings": [
+      {
+        "finding_id": "1",
+        "clause_reference": "1. LIMITATION OF LIABILITY",
+        "policy_violated": "d55cd3837dfba1068ca5d77bc90df306",
+        "severity": "critical",
+        "contract_evidence": "Contractor's total liability under this Agreement shall not exceed the amount of fees paid by Client in the twelve (12) months preceding the claim.",
+        "issue_explanation": "The limitation of liability clause does not meet the minimum requirement of a liability cap of at least 200% of total fees, as mandated by Policy ID d55cd3837dfba1068ca5d77bc90df306.",
+        "suggested_edit": {
+          "change_type": "text_replacement",
+          "current_text": "Contractor's total liability under this Agreement shall not exceed the amount of fees paid by Client in the twelve (12) months preceding the claim.",
+          "proposed_text": "Contractor's total liability under this Agreement shall not exceed 200% of the total fees paid by Client under this Agreement.",
+          "track_changes": {
+            "deletions": [
+              {
+                "start": 0,
+                "end": 82,
+                "text": "Contractor's total liability under this Agreement shall not exceed the amount of fees paid by Client in the twelve (12) months preceding the claim."
+              }
+            ],
+            "insertions": [
+              {
+                "position": 0,
+                "text": "Contractor's total liability under this Agreement shall not exceed 200% of the total fees paid by Client under this Agreement."
+              }
+            ]
+          },
+          "rationale": "This change aligns with Policy ID d55cd3837dfba1068ca5d77bc90df306, which requires a liability cap of at least 200% of total fees."
+        },
+        "fallback_options": []
+      },
+      {
+        "finding_id": "2",
+        "clause_reference": "8. GOVERNING LAW AND DISPUTE RESOLUTION",
+        "policy_violated": "0a70383d458d7823a646e4a28819f58b",
+        "severity": "high",
+        "contract_evidence": "This Agreement shall be governed by the laws of the Cayman Islands.",
+        "issue_explanation": "The governing law clause does not comply with the requirement to align with the laws of England and Wales as specified in Policy ID 0a70383d458d7823a646e4a28819f58b.",
+        "suggested_edit": {
+          "change_type": "text_replacement",
+          "current_text": "This Agreement shall be governed by the laws of the Cayman Islands.",
+          "proposed_text": "This Agreement shall be governed by the laws of England and Wales.",
+          "track_changes": {
+            "deletions": [
+              {
+                "start": 48,
+                "end": 73,
+                "text": "the laws of the Cayman Islands."
+              }
+            ],
+            "insertions": [
+              {
+                "position": 48,
+                "text": "the laws of England and Wales."
+              }
+            ]
+          },
+          "rationale": "This change ensures compliance with Policy ID 0a70383d458d7823a646e4a28819f58b, which mandates governing law to be aligned with England and Wales."
+        },
+        "fallback_options": []
+      },
+      {
+        "finding_id": "3",
+        "clause_reference": "6. PAYMENT TERMS",
+        "policy_violated": "ceee425e796c8ef6ef06aaaeb1ef1338",
+        "severity": "medium",
+        "contract_evidence": "Client shall pay all invoices within sixty (60) days of receipt.",
+        "issue_explanation": "The payment terms exceed the maximum allowable period of 30 days from the invoice date, as stipulated in Policy ID ceee425e796c8ef6ef06aaaeb1ef1338.",
+        "suggested_edit": {
+          "change_type": "text_replacement",
+          "current_text": "Client shall pay all invoices within sixty (60) days of receipt.",
+          "proposed_text": "Client shall pay all invoices within thirty (30) days of receipt.",
+          "track_changes": {
+            "deletions": [
+              {
+                "start": 36,
+                "end": 60,
+                "text": "sixty (60) days of receipt."
+              }
+            ],
+            "insertions": [
+              {
+                "position": 36,
+                "text": "thirty (30) days of receipt."
+              }
+            ]
+          },
+          "rationale": "This amendment aligns with Policy ID ceee425e796c8ef6ef06aaaeb1ef1338, which mandates payment terms not to exceed 30 days."
+        },
+        "fallback_options": [
+          {
+            "alternative_text": "Client shall pay all invoices within forty-five (45) days of receipt, subject to CFO approval.",
+            "conditions": [
+              "if CFO approval is obtained for extended payment terms"
+            ],
+            "risk_level": "medium"
+          }
+        ]
+      },
+      {
+        "finding_id": "4",
+        "clause_reference": "11. AUTOMATIC RENEWAL",
+        "policy_violated": "75755f81028b29e31cf54b6860641b93",
+        "severity": "high",
+        "contract_evidence": "Contractor reserves the right to increase fees upon renewal by up to 25% without additional notice.",
+        "issue_explanation": "The automatic renewal clause allows for a fee increase of up to 25%, which exceeds the maximum allowable increase of 5% or CPI, as required by Policy ID 75755f81028b29e31cf54b6860641b93.",
+        "suggested_edit": {
+          "change_type": "text_replacement",
+          "current_text": "Contractor reserves the right to increase fees upon renewal by up to 25% without additional notice.",
+          "proposed_text": "Contractor reserves the right to increase fees upon renewal by a maximum of 5% or CPI, whichever is lower.",
+          "track_changes": {
+            "deletions": [
+              {
+                "start": 92,
+                "end": 138,
+                "text": "increase fees upon renewal by up to 25% without additional notice."
+              }
+            ],
+            "insertions": [
+              {
+                "position": 92,
+                "text": "increase fees upon renewal by a maximum of 5% or CPI, whichever is lower."
+              }
+            ]
+          },
+          "rationale": "This modification ensures compliance with Policy ID 75755f81028b29e31cf54b6860641b93, which limits annual price increases."
+        },
+        "fallback_options": []
+      },
+      {
+        "finding_id": "5",
+        "clause_reference": "12. SERVICE LEVEL AGREEMENT",
+        "policy_violated": "4a543438df005bc941a1e1ccf7ffb7b8",
+        "severity": "medium",
+        "contract_evidence": "Contractor commits to 95% uptime for Services.",
+        "issue_explanation": "The SLA does not meet the minimum uptime requirement of 99.5% for standard tier services, as specified in Policy ID 4a543438df005bc941a1e1ccf7ffb7b8.",
+        "suggested_edit": {
+          "change_type": "text_replacement",
+          "current_text": "Contractor commits to 95% uptime for Services.",
+          "proposed_text": "Contractor commits to 99.5% uptime for Services.",
+          "track_changes": {
+            "deletions": [
+              {
+                "start": 27,
+                "end": 54,
+                "text": "95% uptime for Services."
+              }
+            ],
+            "insertions": [
+              {
+                "position": 27,
+                "text": "99.5% uptime for Services."
+              }
+            ]
+          },
+          "rationale": "This change aligns with Policy ID 4a543438df005bc941a1e1ccf7ffb7b8, which requires a minimum SLA of 99.5% uptime."
+        },
+        "fallback_options": []
+      }
+    ],
+    "summary": {
+      "total_findings": 5,
+      "by_severity": {
+        "critical": 1,
+        "high": 2,
+        "medium": 2,
+        "low": 0
+      },
+      "total_suggested_edits": 5,
+      "key_themes": [
+        "liability cap",
+        "governing law",
+        "payment terms",
+        "automatic renewal",
+        "service level agreements"
+      ]
+    },
+    "analysis_metadata": {
+      "timestamp": "2025-10-03T20:47:05.936839",
+      "style_params": {
+        "party": "buyer",
+        "tone": "balanced",
+        "formality": "legal",
+        "aggressiveness": "balanced",
+        "audience": "internal"
+      },
+      "model": "gpt-4o-mini",
+      "contract_length": 4529,
+      "policies_checked": 15
+    }
+  },
+  "notes": null
+}

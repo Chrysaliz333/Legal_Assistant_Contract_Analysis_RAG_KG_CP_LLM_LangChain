@@ -1,0 +1,156 @@
+{
+  "version_id": "acme_saas_2025_v4",
+  "negotiation_id": "acme_saas_2025",
+  "version_number": 4,
+  "contract_text": "MASTER SERVICES AGREEMENT\n\nThis Master Services Agreement (\"Agreement\") is entered into as of March 15, 2024 (\"Effective Date\") between TechCorp Solutions, Inc. (\"Client\") and DataVendor Systems LLC (\"Contractor\").\n\n1. LIMITATION OF LIABILITY\n\nContractor's total liability under this Agreement shall not exceed 1.5\u00d7 the amount of fees paid by Client in the twelve (12) months preceding the claim. This limitation applies to all claims, regardless of the form of action.\n\n2. INTELLECTUAL PROPERTY OWNERSHIP\n\nAll work product, deliverables, inventions, discoveries, and improvements created by Contractor in the course of providing Services shall be jointly owned by Contractor and Client. Client is granted a perpetual, irrevocable license to use such work product for Client's business purposes.\n\n3. TERMINATION\n\nEither party may terminate this Agreement for any reason or no reason upon sixty (60) days prior written notice to the other party. Upon termination, Client shall pay all outstanding fees and expenses within thirty (30) days of the termination date.\n\n4. CONFIDENTIALITY\n\nEach party agrees to maintain the confidentiality of the other party's Confidential Information disclosed during the term of this Agreement. The receiving party shall use the same degree of care to protect the disclosing party's Confidential Information as it uses to protect its own confidential information, but in no event less than reasonable care. This obligation shall survive for a period of five (5) years following the disclosure of the Confidential Information.\n\n5. DATA PROTECTION AND PRIVACY\n\nContractor shall process Client data in accordance with applicable data protection laws. Contractor shall provide prior written notice to Client before transferring Client data to third-party service providers located outside the European Economic Area. Data retention period shall be mutually agreed upon by both parties in writing.\n\n6. PAYMENT TERMS\n\nClient shall pay all invoices within thirty (30) days of receipt. Late payments shall accrue interest at a rate of 1.5% per month. Fees may be refunded on a pro-rated basis if Services are terminated early.\n\n7. WARRANTY DISCLAIMER\n\nCONTRACTOR PROVIDES ALL SERVICES \"AS IS\" WITHOUT ANY WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. CONTRACTOR DOES NOT WARRANT THAT SERVICES WILL BE UNINTERRUPTED OR ERROR-FREE.\n\n8. GOVERNING LAW AND DISPUTE RESOLUTION\n\nThis Agreement shall be governed by the laws of Delaware, United States. Any disputes arising under this Agreement shall be resolved through good faith negotiation for thirty (30) days, followed by mediation if needed. Arbitration shall be a last resort and conducted in English in New York, NY, with each party bearing its own costs and expenses.\n\n9. INDEMNIFICATION\n\nClient shall indemnify, defend, and hold harmless Contractor from any and all claims, damages, losses, and expenses (including reasonable attorneys' fees) arising from Client's misuse of the Services or breach of this Agreement. Contractor shall indemnify Client for claims arising from Contractor's negligence or breach.\n\n10. ASSIGNMENT\n\nNeither party may assign this Agreement without the other party's prior written consent, which shall not be unreasonably withheld.\n\n11. AUTOMATIC RENEWAL\n\nThis Agreement shall automatically renew for successive one-year terms unless either party provides written notice of non-renewal at least ninety (90) days prior to the end of the then-current term. Any fee increases upon renewal shall be mutually agreed upon in writing and shall not exceed 10% annually.\n\n12. SERVICE LEVEL AGREEMENT\n\nContractor commits to 99.5% uptime for Services, measured on a monthly basis. In the event of failure to meet this commitment, Client shall receive a service credit equal to 5% of the monthly fee for the affected month, with escalating credits for continued failures.\n\nIN WITNESS WHEREOF, the parties have executed this Agreement as of the Effective Date.\n\nTechCorp Solutions, Inc.                    DataVendor Systems LLC\n\nBy: _________________________              By: _________________________\n    Sarah Johnson                             Michael Chen\n    Chief Procurement Officer                 Chief Revenue Officer\n    Date: March 15, 2024                      Date: March 15, 2024\n",
+  "uploaded_at": "2025-10-03T20:48:20.528101",
+  "uploaded_by": "counterparty",
+  "file_hash": "722799e50eae4fce",
+  "analysis_result": {
+    "findings": [
+      {
+        "finding_id": "1",
+        "clause_reference": "1. LIMITATION OF LIABILITY",
+        "policy_violated": "d55cd3837dfba1068ca5d77bc90df306",
+        "severity": "critical",
+        "contract_evidence": "Contractor's total liability under this Agreement shall not exceed 1.5\u00d7 the amount of fees paid by Client in the twelve (12) months preceding the claim.",
+        "issue_explanation": "The liability cap set at 1.5 times the fees paid does not meet the minimum requirement of 200% of total fees as mandated by Policy d55cd3837dfba1068ca5d77bc90df306.",
+        "suggested_edit": {
+          "change_type": "value_update",
+          "current_text": "1.5\u00d7 the amount of fees paid",
+          "proposed_text": "2\u00d7 the amount of fees paid",
+          "track_changes": {
+            "deletions": [
+              {
+                "start": 54,
+                "end": 66,
+                "text": "1.5\u00d7 the amount of fees paid"
+              }
+            ],
+            "insertions": [
+              {
+                "position": 54,
+                "text": "2\u00d7 the amount of fees paid"
+              }
+            ]
+          },
+          "rationale": "This change aligns with Policy d55cd3837dfba1068ca5d77bc90df306, which requires a liability cap of at least 200% of total fees."
+        },
+        "fallback_options": [
+          {
+            "alternative_text": "1.75\u00d7 the amount of fees paid",
+            "conditions": [
+              "if immediate compliance with 200% is not feasible"
+            ],
+            "risk_level": "medium"
+          }
+        ]
+      },
+      {
+        "finding_id": "2",
+        "clause_reference": "8. GOVERNING LAW AND DISPUTE RESOLUTION",
+        "policy_violated": "0a70383d458d7823a646e4a28819f58b",
+        "severity": "high",
+        "contract_evidence": "This Agreement shall be governed by the laws of Delaware, United States.",
+        "issue_explanation": "The governing law clause specifies Delaware, which does not align with the requirement for governing law to be aligned with England and Wales as per Policy 0a70383d458d7823a646e4a28819f58b.",
+        "suggested_edit": {
+          "change_type": "text_replacement",
+          "current_text": "the laws of Delaware, United States",
+          "proposed_text": "the laws of England and Wales",
+          "track_changes": {
+            "deletions": [
+              {
+                "start": 41,
+                "end": 75,
+                "text": "the laws of Delaware, United States"
+              }
+            ],
+            "insertions": [
+              {
+                "position": 41,
+                "text": "the laws of England and Wales"
+              }
+            ]
+          },
+          "rationale": "This amendment ensures compliance with Policy 0a70383d458d7823a646e4a28819f58b, which mandates governing law to be aligned with England and Wales."
+        },
+        "fallback_options": [
+          {
+            "alternative_text": "the laws of New York, United States",
+            "conditions": [
+              "if the parties prefer a U.S. jurisdiction but still want to comply with the spirit of the policy"
+            ],
+            "risk_level": "medium"
+          }
+        ]
+      },
+      {
+        "finding_id": "3",
+        "clause_reference": "11. AUTOMATIC RENEWAL",
+        "policy_violated": "75755f81028b29e31cf54b6860641b93",
+        "severity": "medium",
+        "contract_evidence": "Any fee increases upon renewal shall be mutually agreed upon in writing and shall not exceed 10% annually.",
+        "issue_explanation": "The clause allows for fee increases of up to 10% annually, which exceeds the maximum allowable increase of 5% or CPI as stipulated in Policy 75755f81028b29e31cf54b6860641b93.",
+        "suggested_edit": {
+          "change_type": "value_update",
+          "current_text": "not exceed 10% annually",
+          "proposed_text": "not exceed 5% or CPI, whichever is lower",
+          "track_changes": {
+            "deletions": [
+              {
+                "start": 118,
+                "end": 138,
+                "text": "not exceed 10% annually"
+              }
+            ],
+            "insertions": [
+              {
+                "position": 118,
+                "text": "not exceed 5% or CPI, whichever is lower"
+              }
+            ]
+          },
+          "rationale": "This modification aligns the contract with Policy 75755f81028b29e31cf54b6860641b93, which limits annual price increases."
+        },
+        "fallback_options": [
+          {
+            "alternative_text": "not exceed 7% annually with justification",
+            "conditions": [
+              "if the vendor can provide a compelling reason for a higher increase"
+            ],
+            "risk_level": "medium"
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "total_findings": 3,
+      "by_severity": {
+        "critical": 1,
+        "high": 1,
+        "medium": 1,
+        "low": 0
+      },
+      "total_suggested_edits": 3,
+      "key_themes": [
+        "liability cap",
+        "governing law",
+        "automatic renewal terms"
+      ]
+    },
+    "analysis_metadata": {
+      "timestamp": "2025-10-03T20:48:20.518582",
+      "style_params": {
+        "party": "buyer",
+        "tone": "balanced",
+        "formality": "legal",
+        "aggressiveness": "balanced",
+        "audience": "internal"
+      },
+      "model": "gpt-4o-mini",
+      "contract_length": 4396,
+      "policies_checked": 15
+    }
+  },
+  "notes": null
+}
