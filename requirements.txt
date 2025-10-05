@@ -1,10 +1,12 @@
 # Legal Assistant - Streamlit Cloud Deployment
-# Optimized for app_unified.py
+# Minimal working set for app_unified.py
 
 # Core AI
 openai>=1.0.0
 langchain>=0.3.0
 langchain-openai>=0.1.0
+langchain-community>=0.3.0
+langchain-core>=0.3.0
 
 # Web UI
 streamlit>=1.39.0
