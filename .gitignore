@@ -209,3 +209,7 @@ htmlcov/
 *.analysis.json
 *.findings.json
 *.diff.html
+
+# Negotiations data - keep the structure but ignore specific negotiations
+negotiations/
+!negotiations/.gitkeep
