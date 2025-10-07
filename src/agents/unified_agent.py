@@ -171,6 +171,14 @@ Return ONLY a JSON object (no markdown, no code blocks):
       "clause_reference": "Section X.Y or paragraph number",
       "policy_violated": "policy_id (e.g., LP-401)",
       "severity": "critical|high|medium|low",
+      "risk_score": {{
+        "likelihood": 1-5,
+        "likelihood_reasoning": "Why this probability (based on contract context)",
+        "impact": 1-5,
+        "impact_reasoning": "Potential business/financial/legal consequences",
+        "overall_score": 1-25,
+        "risk_level": "critical|high|medium|low"
+      }},
       "contract_evidence": "EXACT QUOTE FROM CONTRACT",
       "issue_explanation": "What's wrong and why (in YOUR communication style)",
       "suggested_edit": {{
@@ -195,10 +203,19 @@ Return ONLY a JSON object (no markdown, no code blocks):
   "summary": {{
     "total_findings": 0,
     "by_severity": {{"critical": 0, "high": 0, "medium": 0, "low": 0}},
+    "by_risk_level": {{"critical": 0, "high": 0, "medium": 0, "low": 0}},
     "total_suggested_edits": 0,
-    "key_themes": ["list of recurring issues"]
+    "key_themes": ["list of recurring issues"],
+    "average_risk_score": 0.0,
+    "highest_risk_finding": "finding_id"
   }}
 }}
+
+**RISK SCORING GUIDELINES:**
+- Likelihood (1-5): 5=Very Likely (>80%), 4=Likely (60-80%), 3=Possible (40-60%), 2=Unlikely (20-40%), 1=Rare (<20%)
+- Impact (1-5): 5=Catastrophic (unlimited liability, business failure), 4=Major (>$500K loss), 3=Moderate ($100K-$500K), 2=Minor ($10K-$100K), 1=Negligible (<$10K)
+- Overall Score = Likelihood × Impact (1-25)
+- Risk Level: 16-25=Critical, 11-15=High, 6-10=Medium, 1-5=Low
 
 Be thorough but focused. Quality over quantity."""
 

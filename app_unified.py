@@ -178,7 +178,11 @@ def display_findings(result):
     # Summary stats
     summary = result.get('summary', {})
     by_severity = summary.get('by_severity', {})
+    by_risk_level = summary.get('by_risk_level', {})
+    avg_risk = summary.get('average_risk_score', 0)
 
+    # Row 1: Risk-based metrics
+    st.markdown("### 🎯 Risk-Based Assessment")
     col1, col2, col3, col4, col5 = st.columns(5)
 
     with col1:
@@ -190,29 +194,77 @@ def display_findings(result):
         """, unsafe_allow_html=True)
 
     with col2:
-        critical_count = by_severity.get('critical', 0)
+        critical_risk = by_risk_level.get('critical', 0)
         st.markdown(f"""
         <div class="stat-box">
-            <h3 class="critical">{critical_count}</h3>
-            <p>Critical</p>
+            <h3 class="critical">{critical_risk}</h3>
+            <p>Critical Risk</p>
         </div>
         """, unsafe_allow_html=True)
 
     with col3:
-        high_count = by_severity.get('high', 0)
+        high_risk = by_risk_level.get('high', 0)
         st.markdown(f"""
         <div class="stat-box">
-            <h3 class="high">{high_count}</h3>
-            <p>High Priority</p>
+            <h3 class="high">{high_risk}</h3>
+            <p>High Risk</p>
         </div>
         """, unsafe_allow_html=True)
 
     with col4:
+        medium_risk = by_risk_level.get('medium', 0)
+        st.markdown(f"""
+        <div class="stat-box">
+            <h3 class="medium">{medium_risk}</h3>
+            <p>Medium Risk</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col5:
+        st.markdown(f"""
+        <div class="stat-box">
+            <h3 style="color: #1f77b4;">{avg_risk:.1f}</h3>
+            <p>Avg Risk Score</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # Row 2: Traditional severity + edits
+    st.markdown("### 📊 Severity Distribution")
+    col1, col2, col3, col4, col5 = st.columns(5)
+
+    with col1:
+        critical_count = by_severity.get('critical', 0)
+        st.markdown(f"""
+        <div class="stat-box">
+            <h3 class="critical">{critical_count}</h3>
+            <p>Critical Severity</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        high_count = by_severity.get('high', 0)
+        st.markdown(f"""
+        <div class="stat-box">
+            <h3 class="high">{high_count}</h3>
+            <p>High Severity</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col3:
         medium_count = by_severity.get('medium', 0)
         st.markdown(f"""
         <div class="stat-box">
             <h3 class="medium">{medium_count}</h3>
-            <p>Medium</p>
+            <p>Medium Severity</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col4:
+        low_count = by_severity.get('low', 0)
+        st.markdown(f"""
+        <div class="stat-box">
+            <h3 class="low">{low_count}</h3>
+            <p>Low Severity</p>
         </div>
         """, unsafe_allow_html=True)
 
@@ -230,6 +282,10 @@ def display_findings(result):
     # Display each finding
     for i, finding in enumerate(findings, 1):
         severity = finding.get('severity', 'medium')
+        risk_score_data = finding.get('risk_score', {})
+        risk_level = risk_score_data.get('risk_level', 'medium')
+        overall_score = risk_score_data.get('overall_score', 0)
+
         severity_color = {
             'critical': '#d62728',
             'high': '#ff7f0e',
@@ -237,13 +293,55 @@ def display_findings(result):
             'low': '#98df8a'
         }.get(severity, '#999999')
 
+        risk_color = {
+            'critical': '#d62728',
+            'high': '#ff7f0e',
+            'medium': '#ffbb78',
+            'low': '#98df8a'
+        }.get(risk_level, '#999999')
+
         with st.expander(
             f"**Finding {i}**: {finding.get('clause_reference', 'Unknown Clause')} - "
-            f"**{severity.upper()}**",
+            f"**Risk Score: {overall_score}/25** ({risk_level.upper()})",
             expanded=(i <= 3)
         ):
+            # Risk Score Visualization
+            if risk_score_data:
+                st.markdown("### ⚠️ Risk Assessment")
+
+                col_risk1, col_risk2, col_risk3 = st.columns(3)
+
+                with col_risk1:
+                    likelihood = risk_score_data.get('likelihood', 0)
+                    st.markdown(f"""
+                    <div style="text-align: center; padding: 0.5rem; background-color: {risk_color}20; border-radius: 0.5rem;">
+                        <h4 style="margin: 0;">Likelihood: {likelihood}/5</h4>
+                        <p style="margin: 0; font-size: 0.8rem;">{risk_score_data.get('likelihood_reasoning', 'N/A')}</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                with col_risk2:
+                    impact = risk_score_data.get('impact', 0)
+                    st.markdown(f"""
+                    <div style="text-align: center; padding: 0.5rem; background-color: {risk_color}20; border-radius: 0.5rem;">
+                        <h4 style="margin: 0;">Impact: {impact}/5</h4>
+                        <p style="margin: 0; font-size: 0.8rem;">{risk_score_data.get('impact_reasoning', 'N/A')}</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                with col_risk3:
+                    st.markdown(f"""
+                    <div style="text-align: center; padding: 0.5rem; background-color: {risk_color}; color: white; border-radius: 0.5rem;">
+                        <h4 style="margin: 0;">Overall: {overall_score}/25</h4>
+                        <p style="margin: 0; font-size: 0.8rem; font-weight: bold;">{risk_level.upper()} RISK</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                st.markdown("---")
+
             # Policy violated
             st.markdown(f"**Policy Violated:** `{finding.get('policy_violated', 'Unknown')}`")
+            st.markdown(f"**Severity Classification:** `{severity.upper()}`")
 
             # Contract evidence
             st.markdown("**Evidence from Contract:**")
